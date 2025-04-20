@@ -1,3 +1,15 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu contentId="main-content" side="start" type="push">
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item routerLink="/home" routerDirection="root" lines="none">Today</ion-item>
+        <ion-item routerLink="/calendar" lines="none">Calendar</ion-item>
+        <ion-item routerLink="/tasks-lists" lines="none">My to-do lists</ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
 </ion-app>
