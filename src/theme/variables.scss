@@ -5,3 +5,16 @@
   --ion-text-color: #000;
 }
 
+ion-button {
+  text-transform: capitalize;
+  margin-bottom: 8px;
+  padding: 12px;
+  width: 50%;
+  height: 100%;
+}
+
+ion-item {
+  margin-bottom: 8px;
+  border-radius: 25px;
+}
+

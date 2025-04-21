@@ -2,9 +2,22 @@
   <ion-menu contentId="main-content" side="start" type="push">
     <ion-content class="ion-padding">
       <ion-list>
-        <ion-item routerLink="/home" routerDirection="root" lines="none">Today</ion-item>
-        <ion-item routerLink="/calendar" lines="none">Calendar</ion-item>
-        <ion-item routerLink="/tasks-lists" lines="none">My to-do lists</ion-item>
+        <ion-button color="light">
+          <ion-icon slot="start" name="add-outline"></ion-icon>
+          <ion-label>Create</ion-label>
+        </ion-button>
+        <ion-item routerLink="/home" lines="none">
+          <ion-icon slot="start" name="today-outline"></ion-icon>
+          <ion-label>Today's tasks</ion-label>
+        </ion-item>
+        <ion-item routerLink="/calendar" lines="none">
+          <ion-icon slot="start" name="calendar-outline"></ion-icon>
+          <ion-label>Calendar</ion-label>
+        </ion-item>
+        <ion-item routerLink="/tasks-lists" lines="none">
+          <ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
+          <ion-label>Tasks lists</ion-label>
+        </ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>
