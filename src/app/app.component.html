@@ -39,11 +39,6 @@
           <ion-item class="titleItem">
             <ion-input type="text" formControlName="title" placeholder="Add a title" class="titleInput"></ion-input>
           </ion-item>
-          <div class="error-container" *ngIf="hasErrors('title', 'required')">
-            <ion-text color="danger">
-              <p class="error-message">Title is required</p>
-            </ion-text>
-          </div>
 
           <ion-item class="dateItem" lines="none">
             <ion-icon slot="start" name="time-outline"></ion-icon>
@@ -67,11 +62,7 @@
               (click)="toggleTimePicker()">
             </ion-input>
           </ion-item>
-          <div class="error-container" *ngIf="hasErrors('date', 'required')">
-            <ion-text color="danger">
-              <p class="error-message">Date is required</p>
-            </ion-text>
-          </div>
+
           <ion-checkbox (click)="allDayCheck()" label-placement="end">All day</ion-checkbox>
           <div class="datetimeOverlay">
             <ion-datetime
@@ -114,7 +105,7 @@
             </ion-select>
           </div>
 
-          <ion-button id="button-submit" type="submit">Create</ion-button>
+          <ion-button id="button-submit" type="submit" [disabled]="taskButtonDisabled">Create</ion-button>
         </form>
       </ion-content>
     </ng-template>

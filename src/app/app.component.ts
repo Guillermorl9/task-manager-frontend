@@ -42,6 +42,7 @@ export class AppComponent {
   formattedTime: string = '';
   showTimePicker: boolean = false;
   allDay: boolean = false;
+  taskButtonDisabled: boolean = true;
 
   constructor(private form: FormBuilder) {
     addIcons({ addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline });
@@ -52,6 +53,10 @@ export class AppComponent {
       time: [''],
       description: [''],
       list: ['list1'],
+    });
+
+    this.createTaskForm.valueChanges.subscribe(() => {
+      this.taskButtonDisabled = !(this.createTaskForm.get('title')?.value && this.createTaskForm.get('date')?.value);
     });
   }
 
@@ -144,9 +149,7 @@ export class AppComponent {
   // createTaskForm: Check if the form is valid
   hasErrors(controlName: string, errorName: string): boolean {
     const control = this.createTaskForm.get(controlName);
-    return control !== null &&
-      control.hasError(errorName) &&
-      (control.dirty || control.touched);
+    return control != null;
   }
 
   // createTaskForm: confirm button
@@ -155,10 +158,6 @@ export class AppComponent {
       this.createTaskForm.markAllAsTouched();
       return;
     }
-
-    console.log(`Title: ${this.createTaskForm.value['title']}`);
-    console.log(`Date: ${this.createTaskForm.value['date']}`);
-    console.log("Tarea creada");
 
     this.formattedDate = '';
     this.formattedTime = '';
