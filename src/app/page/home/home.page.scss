@@ -1,27 +1,55 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+ion-card {
+  width: 50%;
+  display: flex;
+  align-items: center;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+ion-card-header {
+  height: 100%;
+  width: 30%;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+ion-card-content{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-#container a {
-  text-decoration: none;
+.label-icon-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2%;
+  margin-top: 1%
+}
+
+ion-label {
+  font-weight: bold;
+}
+
+ion-checkbox {
+  border-radius: 10px;
+}
+
+.listOptionsIcon {
+  cursor: pointer;
+  border-radius: 100%;
+  font-size: 25px;
+}
+
+.listOptionsIcon:hover {
+  background-color: #e8eaff;
+  transition: all 0.2s ease-in-out;
+}
+
+.addTaskText {
+  border-radius: 20%;
+  cursor: pointer;
+  color: blue;
+}
+
+.addTaskText:hover {
+  background-color: #e8eaff;
+  transition: all 0.2s ease-in-out;
 }

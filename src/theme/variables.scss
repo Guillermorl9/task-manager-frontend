@@ -1,10 +1,10 @@
 :root {
-  --ion-background-color: #fFf9fa;
+  --ion-background-color: #fefefe;
   --ion-background-color-rgb: 248, 249, 250;
   --ion-text-color: #212529;
-  --ion-border-color: #e9ecef;
-  --ion-item-background: #fFf9fa;
-  --ion-toolbar-background: #ffffff;
+  --ion-border-color: #fefefe;
+  --ion-item-background: #fefefe;
+  --ion-toolbar-background: #fefefe;
   --primary-color: #4f6df5;
   --primary-shade: #3d5bd9;
 }
@@ -51,12 +51,12 @@ ion-modal ion-item {
   --border-radius: 8px;
   --background: #f8f9fa;
   margin-bottom: 8px;
-  background-color: #fFf9fa;
+  background-color: #fefefe;
   font-size: 0.85rem;
 }
 
 ion-modal ion-item.titleItem {
-  --background: #fFf9fa;
+  --background: #fefefe;
   padding-bottom: 4px;
   margin-bottom: 8px;
 }
@@ -64,11 +64,11 @@ ion-modal ion-item.titleItem {
 ion-modal ion-item.titleItem ion-input {
   font-size: 1rem;
   font-weight: 400;
-  background-color: #fFf9fa;
+  background-color: #fefefe;
 }
 
 ion-modal ion-item.dateItem {
-  --background: #fFf9fa;
+  --background: #fefefe;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -112,7 +112,7 @@ ion-modal ion-checkbox {
 
 ion-modal ion-item ion-list ion-item {
   --background: #e8eaff;
-  background-color: #fFf9fa;
+  background-color: #fefefe;
   font-size: 0.85rem;
   --padding-start: 6px;
   --padding-end: 6px;
@@ -139,7 +139,7 @@ ion-modal ion-item.listItem ion-select {
 }
 
 ion-modal ion-item.listItem {
-  --background: #fFf9fa;
+  --background: #fefefe;
   --padding-start: 6px;
   --padding-end: 6px;
 }
@@ -147,7 +147,7 @@ ion-modal ion-item.listItem {
 .customSelectContainer {
   display: flex;
   align-items: center;
-  background-color: #fFf9fa;
+  background-color: #fefefe;
   padding: 8px;
   margin-bottom: 8px;
   width: 50%;
@@ -215,7 +215,7 @@ ion-modal ion-textarea.descriptionInput {
 }
 
 ion-modal ion-item.descriptionItem {
-  --background: #fFf9fa;
+  --background: #fefefe;
   --padding-start: 6px;
   --padding-end: 6px;
 }

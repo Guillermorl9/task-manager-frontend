@@ -1,4 +1,26 @@
 <app-custom-header [title]="'Today'"></app-custom-header>
 <ion-content class="ion-padding">
-  <h2>Here are today's tasks</h2>
+  <ng-container *ngFor="let taskList of todayTaskList">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{taskList.title}}</ion-card-title>
+      <ion-card-subtitle>
+        <ion-text class="addTaskText">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          Add a new task
+        </ion-text>
+      </ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="label-icon-container">
+        <ion-label>Today</ion-label>
+        <ion-icon name="ellipsis-vertical-outline" class="listOptionsIcon"></ion-icon>
+      </div>
+      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+    </ion-card-content>
+  </ion-card>
+  </ng-container>
 </ion-content>

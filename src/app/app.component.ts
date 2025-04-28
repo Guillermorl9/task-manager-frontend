@@ -16,7 +16,7 @@ import {
   IonButtons,
   IonTitle,
   IonInput,
-  IonDatetime, IonGrid, IonRow, IonCol, IonCheckbox, IonSelect, IonSelectOption, IonTextarea, IonText
+  IonDatetime, IonCheckbox, IonSelect, IonSelectOption, IonTextarea
 } from '@ionic/angular/standalone';import {RouterModule} from "@angular/router";
 import {addIcons} from "ionicons";
 import {addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline} from "ionicons/icons";
@@ -27,7 +27,7 @@ import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [RouterModule, IonApp, ReactiveFormsModule, IonText, IonTextarea, IonCheckbox, IonSelect, IonSelectOption, IonGrid, IonRow, IonCol, IonRouterOutlet, FormsModule, CommonModule, IonInput, IonDatetime, IonItem, IonList, IonContent, IonMenu, IonRouterLink, IonIcon, IonButton, IonLabel, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle],
+  imports: [RouterModule, IonApp, ReactiveFormsModule, IonTextarea, IonCheckbox, IonSelect, IonSelectOption, IonRouterOutlet, FormsModule, CommonModule, IonInput, IonDatetime, IonItem, IonList, IonContent, IonMenu, IonRouterLink, IonIcon, IonButton, IonLabel, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle],
 })
 export class AppComponent {
   // Decorators
