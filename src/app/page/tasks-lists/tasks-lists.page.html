@@ -1,4 +1,31 @@
 <app-custom-header [title]="'My tasks lists'"></app-custom-header>
 <ion-content class="ion-padding">
-  <h2>Here are my tasks lists</h2>
+  <div class="scroll-container">
+    <div class="taskListContent">
+    <ng-container *ngFor="let taskList of allTaskList">
+      <ion-card>
+        <ion-card-header>
+          <div class="titleIconContainer">
+            <ion-card-title>{{taskList.title}}</ion-card-title>
+            <ion-icon name="ellipsis-vertical-outline" class="listOptionsIcon"></ion-icon>
+          </div>
+          <ion-card-subtitle>
+            <ion-text class="addTaskText">
+              <ion-icon name="add-circle-outline"></ion-icon>
+              Add a new task
+            </ion-text>
+          </ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="taskContainer">
+            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+    </div>
+  </div>
 </ion-content>

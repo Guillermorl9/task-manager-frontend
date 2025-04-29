@@ -1,0 +1,57 @@
+.taskListContent {
+  display: flex;
+  gap: 1rem;
+  width: 25%;
+  height: 100%;
+  flex-direction: row;
+}
+
+.scroll-container {
+  overflow-x: auto;
+  height: 80%;
+}
+
+ion-card {
+  min-width: 100%;
+  border-radius: 10px;
+}
+
+ion-content.ion-padding {
+  padding: 16px;
+}
+
+.titleIconContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2%;
+  margin-top: 1%
+}
+
+.listOptionsIcon {
+  cursor: pointer;
+  border-radius: 100%;
+  font-size: 25px;
+}
+
+.listOptionsIcon:hover {
+  background-color: #e8eaff;
+  transition: all 0.2s ease-in-out;
+}
+
+.addTaskText {
+  border-radius: 20%;
+  cursor: pointer;
+  color: blue;
+}
+
+.addTaskText:hover {
+  background-color: #e8eaff;
+  transition: all 0.2s ease-in-out;
+}
+
+.taskContainer {
+  display: flex;
+  flex-direction: column;
+}
