@@ -1,26 +1,122 @@
 <app-custom-header [title]="'Today'"></app-custom-header>
+
 <ion-content class="ion-padding">
-  <ng-container *ngFor="let taskList of todayTaskList">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{taskList.title}}</ion-card-title>
-      <ion-card-subtitle>
-        <ion-text class="addTaskText">
-          <ion-icon name="add-circle-outline"></ion-icon>
-          Add a new task
-        </ion-text>
-      </ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="label-icon-container">
-        <ion-label>Today</ion-label>
-        <ion-icon name="ellipsis-vertical-outline" class="listOptionsIcon"></ion-icon>
+  <div class="welcome-section">
+    <div class="date-header">
+      <h1 class="date-title">{{ formattedDate }}</h1>
+      <p class="date-subtitle">{{ completedTasks }} of {{ totalTasks }} tasks completed</p>
+    </div>
+
+    <div class="progress-container">
+      <ion-progress-bar [value]="completionRate" color="primary"></ion-progress-bar>
+      <div class="progress-label">
+        <span>{{ (completionRate * 100).toFixed(0) }}% completed</span>
       </div>
-      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
-      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
-      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
-      <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <ion-button fill="clear" id="open-create-task-modal" class="action-button">
+      <ion-icon slot="start" name="add-outline"></ion-icon>
+      Add Task
+    </ion-button>
+
+    <ion-button fill="clear" routerLink="/calendar" class="action-button">
+      <ion-icon slot="start" name="calendar-outline"></ion-icon>
+      Calendar
+    </ion-button>
+
+    <ion-button fill="clear" routerLink="/tasks-lists" class="action-button">
+      <ion-icon slot="start" name="list-outline"></ion-icon>
+      Lists
+    </ion-button>
+  </div>
+
+  <ion-card class="task-card">
+    <ion-card-header>
+      <div class="card-header-content">
+        <ion-card-title>
+          <ion-icon name="time-outline"></ion-icon>
+          Today's Tasks
+        </ion-card-title>
+        <ion-chip color="primary" outline>
+          <ion-label>{{ todaysTasks.length }}</ion-label>
+        </ion-chip>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="task-list">
+        <ion-item *ngFor="let task of todaysTasks" lines="none" class="task-item">
+          <ion-checkbox
+            slot="start"
+            [checked]="task.completed"
+            color="primary"
+            (ionChange)="toggleTaskStatus(task)"
+          ></ion-checkbox>
+          <div class="task-content">
+            <ion-label [class.completed]="task.completed">{{ task.title }}</ion-label>
+            <div class="task-details">
+              <span class="task-time">
+                <ion-icon name="time-outline"></ion-icon>
+                {{ getTimeFromTask(task) }}
+              </span>
+              <ion-text *ngIf="task.description" class="task-description">
+                {{ task.description }}
+              </ion-text>
+            </div>
+          </div>
+          <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon"></ion-icon>
+        </ion-item>
+
+        <ion-text *ngIf="todaysTasks.length === 0" color="medium" class="empty-tasks">
+          <em>No tasks for today. Enjoy your day!</em>
+        </ion-text>
+      </div>
     </ion-card-content>
   </ion-card>
-  </ng-container>
+
+  <ion-card class="task-card">
+    <ion-card-header>
+      <div class="card-header-content">
+        <ion-card-title>
+          <ion-icon name="calendar-outline"></ion-icon>
+          Upcoming
+        </ion-card-title>
+        <ion-chip color="primary" outline>
+          <ion-label>{{ upcomingTasks.length }}</ion-label>
+        </ion-chip>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="task-list">
+        <ion-item *ngFor="let task of upcomingTasks" lines="none" class="task-item">
+          <ion-checkbox
+            slot="start"
+            [checked]="task.completed"
+            color="primary"
+            (ionChange)="toggleTaskStatus(task)"
+          ></ion-checkbox>
+          <div class="task-content">
+            <ion-label [class.completed]="task.completed">{{ task.title }}</ion-label>
+            <div class="task-details">
+              <span class="task-date">
+                <ion-icon name="calendar-outline"></ion-icon>
+                {{ task.date | date:'MMM d' }} · {{ getTimeFromTask(task) }}
+              </span>
+              <ion-text *ngIf="task.description" class="task-description">
+                {{ task.description }}
+              </ion-text>
+            </div>
+          </div>
+          <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon"></ion-icon>
+        </ion-item>
+
+        <ion-text *ngIf="upcomingTasks.length === 0" color="medium" class="empty-tasks">
+          <em>No upcoming tasks. You're all caught up!</em>
+        </ion-text>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

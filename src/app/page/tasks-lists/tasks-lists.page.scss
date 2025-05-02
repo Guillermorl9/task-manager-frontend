@@ -1,57 +1,281 @@
-.taskListContent {
-  display: flex;
-  gap: 1rem;
-  width: 25%;
-  height: 100%;
-  flex-direction: row;
+ion-content {
+  --background: #f9f9fb;
 }
 
-.scroll-container {
-  overflow-x: auto;
-  height: 80%;
-}
-
-ion-card {
-  min-width: 100%;
-  border-radius: 10px;
-}
-
-ion-content.ion-padding {
-  padding: 16px;
-}
-
-.titleIconContainer {
+.toolbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  margin-bottom: 2%;
-  margin-top: 1%
+  margin-bottom: 20px;
 }
 
-.listOptionsIcon {
+.search-container {
+  display: flex;
+  align-items: center;
+
+  &.active {
+    flex: 1;
+  }
+}
+
+.custom-searchbar {
+  --border-radius: 12px;
+  --box-shadow: none;
+  --background: #ffffff;
+  --color: #333333;
+  --placeholder-color: #999999;
+  --icon-color: var(--primary-color);
+  --cancel-button-color: var(--primary-color);
+  padding: 0;
+  height: 44px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar-button {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --border-radius: 10px;
+  --background: #ffffff;
+  --color: var(--primary-color);
+  margin: 0;
+  height: 44px;
+  width: 44px;
+
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+.lists-summary {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.category-section {
+  margin-bottom: 24px;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.category-icon {
+  color: var(--primary-color);
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.category-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  color: #333;
+}
+
+ion-badge {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-gap: 16px;
+}
+
+.list-card {
+  margin: 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
   cursor: pointer;
-  border-radius: 100%;
-  font-size: 25px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  }
 }
 
-.listOptionsIcon:hover {
-  background-color: #e8eaff;
-  transition: all 0.2s ease-in-out;
+.list-card-content {
+  padding: 16px;
 }
 
-.addTaskText {
-  border-radius: 20%;
-  cursor: pointer;
-  color: blue;
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
-.addTaskText:hover {
-  background-color: #e8eaff;
-  transition: all 0.2s ease-in-out;
+.list-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
 }
 
-.taskContainer {
+.forward-icon {
+  color: #888;
+  font-size: 16px;
+}
+
+.list-stats {
+  margin-bottom: 12px;
+}
+
+.list-progress {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+}
+
+.progress-bar {
+  height: 4px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.progress-text {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.task-previews {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid #d1d1d1;
+  background-color: #ffffff;
+  flex-shrink: 0;
+
+  &.completed {
+    background-color: var(--primary-color);
+    border: 1.5px solid var(--primary-color);
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 8px;
+      border: solid white;
+      border-width: 0 1.5px 1.5px 0;
+      top: 2px;
+      left: 5px;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.task-preview-title {
+  font-size: 0.9rem;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+
+  &.completed {
+    text-decoration: line-through;
+    color: #999;
+    opacity: 0.7;
+  }
+}
+
+.more-tasks {
+  font-size: 0.85rem;
+  color: #666;
+  padding-left: 24px;
+  margin-top: 2px;
+}
+
+.empty-tasks {
+  font-size: 0.9rem;
+  color: #888;
+  font-style: italic;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.add-list-container {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.add-list-button {
+  --background: var(--accent-color);
+  --color: var(--primary-color);
+  --border-radius: 12px;
+  --box-shadow: none;
+  font-weight: 500;
+  height: 48px;
+  max-width: 280px;
+  margin: 0 auto;
+
+  ion-icon {
+    font-size: 18px;
+    margin-right: 4px;
+  }
+}
+
+ion-fab-button {
+  --background: var(--primary-color);
+  --background-hover: var(--primary-shade);
+  --background-activated: var(--primary-shade);
+  --box-shadow: 0 4px 12px rgba(79, 109, 245, 0.3);
+}
+
+@media (min-width: 768px) {
+  .lists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+@media (min-width: 992px) {
+  .lists-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .lists-grid {
+    grid-template-columns: 1fr;
+  }
 }

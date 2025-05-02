@@ -1,31 +1,75 @@
-<app-custom-header [title]="'My tasks lists'"></app-custom-header>
+<app-custom-header [title]="'My Task Lists'"></app-custom-header>
+
 <ion-content class="ion-padding">
-  <div class="scroll-container">
-    <div class="taskListContent">
-    <ng-container *ngFor="let taskList of allTaskList">
-      <ion-card>
-        <ion-card-header>
-          <div class="titleIconContainer">
-            <ion-card-title>{{taskList.title}}</ion-card-title>
-            <ion-icon name="ellipsis-vertical-outline" class="listOptionsIcon"></ion-icon>
-          </div>
-          <ion-card-subtitle>
-            <ion-text class="addTaskText">
-              <ion-icon name="add-circle-outline"></ion-icon>
-              Add a new task
-            </ion-text>
-          </ion-card-subtitle>
-        </ion-card-header>
-        <ion-card-content>
-          <div class="taskContainer">
-            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
-            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
-            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
-            <ion-checkbox labelPlacement="end" color="primary">Hacer de cenar</ion-checkbox>
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </ng-container>
+  <div class="toolbar-container">
+    <div class="search-container" [class.active]="showSearch">
+      <ion-searchbar *ngIf="showSearch"
+                     [(ngModel)]="searchQuery"
+                     placeholder="Search lists"
+                     animated="true"
+                     showCancelButton="focus"
+                     class="custom-searchbar">
+      </ion-searchbar>
+
+      <div class="action-buttons" *ngIf="!showSearch">
+        <ion-button fill="clear" class="toolbar-button" (click)="toggleSearch()">
+          <ion-icon name="search-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button fill="clear" class="toolbar-button">
+          <ion-icon name="filter-outline"></ion-icon>
+        </ion-button>
+      </div>
     </div>
+  </div>
+
+  <div class="category-section" *ngFor="let section of allTaskSections">
+    <div class="category-header">
+      <ion-icon [name]="section.icon" class="category-icon"></ion-icon>
+      <h2 class="category-title">{{ section.title }}</h2>
+      <ion-badge color="primary" mode="ios">{{ section.lists.length }}</ion-badge>
+    </div>
+
+    <div class="lists-grid">
+      <ion-card class="list-card" *ngFor="let list of section.lists" (click)="openListDetails(list)">
+        <ion-ripple-effect></ion-ripple-effect>
+        <div class="list-card-content">
+          <div class="list-header">
+            <h3 class="list-title">{{ list.title }}</h3>
+            <ion-icon name="chevron-forward-outline" class="forward-icon"></ion-icon>
+          </div>
+
+          <div class="list-stats">
+            <div class="list-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="getTasksPercentage(list)"></div>
+              </div>
+              <span class="progress-text">{{ getCompletedTasksCount(list) }}/{{ list.tasks.length }} tasks</span>
+            </div>
+          </div>
+
+          <div class="task-previews" *ngIf="list.tasks.length > 0">
+            <div class="task-preview" *ngFor="let task of list.tasks.slice(0, 2)">
+              <div class="checkbox-circle" [class.completed]="task.completed"></div>
+              <span class="task-preview-title" [class.completed]="task.completed">{{ task.title }}</span>
+            </div>
+            <div class="more-tasks" *ngIf="list.tasks.length > 2">
+              <span>+{{ list.tasks.length - 2 }} more tasks</span>
+            </div>
+          </div>
+
+          <div class="empty-tasks" *ngIf="list.tasks.length === 0">
+            <span>No tasks in this list yet</span>
+          </div>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+
+  <div class="add-list-container">
+    <ion-button expand="block" class="add-list-button" (click)="addNewList()">
+      <ion-icon name="add-outline" slot="start"></ion-icon>
+      Create New List
+    </ion-button>
   </div>
 </ion-content>
