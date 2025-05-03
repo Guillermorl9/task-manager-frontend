@@ -6,8 +6,6 @@ import {
   IonIcon,
   IonButton,
   IonBadge,
-  IonFab,
-  IonFabButton,
   IonSearchbar,
   IonRippleEffect
 } from '@ionic/angular/standalone';
@@ -43,8 +41,6 @@ import {Category} from "../../model/Category";
     IonIcon,
     IonButton,
     IonBadge,
-    IonFab,
-    IonFabButton,
     IonSearchbar,
     IonRippleEffect,
     CustomHeaderComponent,

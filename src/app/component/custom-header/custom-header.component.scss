@@ -1,0 +1,24 @@
+ion-header {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+
+  ion-toolbar {
+    --border-style: none;
+    padding: 8px 0;
+
+    ion-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #333;
+      padding-inline: 0;
+      text-align: left;
+    }
+
+    ion-buttons {
+      ion-menu-button {
+        color: var(--primary-color);
+        --padding-start: 16px;
+        font-size: 24px;
+      }
+    }
+  }
+}
