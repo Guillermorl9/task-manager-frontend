@@ -1,0 +1,56 @@
+ion-grid {
+  padding: 0;
+}
+
+.calendar-day {
+  padding: 10px 5px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  margin: 2px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgba(var(--ion-color-primary-rgb), 0.1);
+  }
+}
+
+.weekday {
+  font-size: 12px;
+  padding-bottom: 5px;
+  color: var(--ion-color-medium);
+}
+
+.other-month {
+  color: var(--ion-color-medium-shade);
+  opacity: 0.6;
+}
+
+.today {
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  border: 1px solid var(--ion-color-primary);
+}
+
+.selected {
+  background-color: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-weight: bold;
+
+  &:hover {
+    background-color: var(--ion-color-primary);
+  }
+}
+
+ion-row {
+  margin-bottom: 5px;
+}
+
+h5 {
+  margin: 0;
+  font-weight: 500;
+}

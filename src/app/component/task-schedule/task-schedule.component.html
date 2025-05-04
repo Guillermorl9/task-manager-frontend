@@ -1,0 +1,41 @@
+<!-- v1 -->
+<ion-grid>
+  <ion-row class="ion-align-items-center ion-justify-content-between">
+    <ion-col size="2">
+      <ion-button fill="clear" (click)="previousMonth()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-col>
+    <ion-col size="8" class="ion-text-center">
+      <h5>{{ monthNames[currentDate.getMonth()] }} {{ currentDate.getFullYear() }}</h5>
+    </ion-col>
+    <ion-col size="2" class="ion-text-right">
+      <ion-button fill="clear" (click)="nextMonth()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <!-- Días de la semana -->
+  <ion-row>
+    <ion-col size="1.7" *ngFor="let day of weekDays" class="ion-text-center weekday">
+      <strong>{{ day }}</strong>
+    </ion-col>
+  </ion-row>
+
+  <!-- Semanas (Filas) -->
+  <ion-row *ngFor="let week of calendar">
+
+    <!-- Días (Celdas) -->
+    <ion-col
+      size="1.7"
+      *ngFor="let day of week"
+      class="ion-text-center calendar-day"
+      [class.other-month]="!day.isCurrentMonth"
+      [class.today]="day.isToday"
+      [class.selected]="day.isSelected"
+      (click)="selectDate(day)">
+      {{ day.day }}
+    </ion-col>
+  </ion-row>
+</ion-grid>
