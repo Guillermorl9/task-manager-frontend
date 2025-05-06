@@ -81,12 +81,26 @@ export class AppComponent {
 
   // createTaskForm: change date
   toggleDatePicker(): void {
-    if (this.showDatePicker) {
-      this.showDatePicker = false;
-    } else {
-      this.showTimePicker = false;
-      this.showDatePicker = true;
-    }
+    this.showTimePicker = false;
+    this.showDatePicker = true;
+    setTimeout(() => {
+      const dateTimeElement = document.querySelector('ion-datetime');
+      if (dateTimeElement) {
+        (dateTimeElement as any).open();
+      }
+    }, 100);
+  }
+
+  // createTaskForm: change time
+  toggleTimePicker(): void {
+    this.showDatePicker = false;
+    this.showTimePicker = true;
+    setTimeout(() => {
+      const dateTimeElement = document.querySelector('ion-datetime');
+      if (dateTimeElement) {
+        (dateTimeElement as any).open();
+      }
+    }, 100);
   }
 
   // createTaskForm: save the selected date
@@ -107,15 +121,6 @@ export class AppComponent {
     }
   }
 
-  // createTaskForm: change time
-  toggleTimePicker(): void {
-    if (this.showTimePicker) {
-      this.showTimePicker = false;
-    } else {
-      this.showDatePicker = false;
-      this.showTimePicker = true;
-    }
-  }
   // createTaskForm: save the selected time
   timeSelected(): void {
     if (this.selectedTime) {
