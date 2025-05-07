@@ -1,0 +1,68 @@
+.cancel-create-task {
+  font-size: 30px;
+  border-radius: 20px;
+}
+
+.input-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.date-time-inputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.date-input,
+.time-input {
+  background-color: var(--accent-color);;
+  border-radius: 6px;
+  width: 45%;
+  --padding-start: 10px;
+  --padding-end: 10px;
+}
+
+
+.date-time-overlay {
+}
+
+.item-checkbox-all-day {
+  width: 20%;
+  margin-bottom: 10px;
+  margin-left: 3px;
+}
+
+.checkbox-all-day {
+}
+
+.text-area-description {
+  background-color: var(--accent-color);
+  border-radius: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+}
+
+.custom-select-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.select-list {
+  background-color: var(--accent-color);
+  padding: 10px;
+  border-radius: 6px;
+  width: 40%;
+}
+
+.icon-list {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  width: 9%;
+}

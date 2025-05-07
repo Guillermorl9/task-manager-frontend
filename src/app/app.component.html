@@ -4,7 +4,7 @@
       <ion-list>
         <ion-list-header class="menu-header">Quick Actions</ion-list-header>
 
-        <ion-item button id="open-create-task-modal" class="menu-button">
+        <ion-item button (click)="openModal()" class="menu-button">
           <ion-icon slot="start" name="add-outline"></ion-icon>
           <ion-label>Create Task</ion-label>
         </ion-item>
@@ -32,93 +32,8 @@
     </ion-content>
   </ion-menu>
 
-  <ion-modal #createTaskModal trigger="open-create-task-modal" backdrop-dismiss="false">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-title>Create Task</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="cancelCreateTask()" [strong]="true">
-              <ion-icon name="close-outline" class="cancelCreateTask"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-
-      <ion-content class="modalContent">
-        <form [formGroup]="createTaskForm" (ngSubmit)="createTask()">
-          <ion-list lines="none">
-            <ion-item>
-              <ion-input type="text" formControlName="title" placeholder="Add a title"></ion-input>
-            </ion-item>
-
-            <ion-item class="dateItem">
-              <ion-icon slot="start" name="time-outline"></ion-icon>
-              <ion-input
-                placeholder="Select date"
-                [value]="formattedDate"
-                readonly
-                id="date-input"
-                (click)="toggleDatePicker()">
-              </ion-input>
-              <ion-input
-                *ngIf="!allDay"
-                placeholder="Select time"
-                [value]="formattedTime"
-                readonly
-                id="time-input"
-                (click)="toggleTimePicker()">
-              </ion-input>
-            </ion-item>
-
-            <ion-item lines="none">
-              <ion-checkbox (click)="allDayCheck()" label-placement="end">All day</ion-checkbox>
-            </ion-item>
-
-            <div class="datetimeOverlay" *ngIf="showDatePicker">
-              <ion-datetime
-                presentation="date"
-                [(ngModel)]="selectedDate"
-                [ngModelOptions]="{standalone: true}"
-                (ionChange)="dateSelected()">
-              </ion-datetime>
-            </div>
-
-            <div class="datetimeOverlay" *ngIf="showTimePicker">
-              <ion-datetime
-                presentation="time"
-                [(ngModel)]="selectedTime"
-                [ngModelOptions]="{standalone: true}"
-                (ionChange)="timeSelected()">
-              </ion-datetime>
-            </div>
-
-            <ion-item>
-              <ion-icon slot="start" name="reorder-three-outline"></ion-icon>
-              <ion-textarea
-                placeholder="Add a description"
-                formControlName="description"
-                auto-grow="true">
-              </ion-textarea>
-            </ion-item>
-
-            <div class="customSelectContainer">
-              <ion-icon name="reader-outline"></ion-icon>
-              <ion-select interface="popover" formControlName="list" value="list1">
-                <ion-select-option value="list1">Household chores</ion-select-option>
-                <ion-select-option value="list2">Exercise routine</ion-select-option>
-                <ion-select-option value="list3">Assorted tasks</ion-select-option>
-              </ion-select>
-            </div>
-          </ion-list>
-
-          <ion-button id="button-submit" type="submit" [disabled]="taskButtonDisabled">Create</ion-button>
-        </form>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-
   <div class="ion-page" id="main-content">
     <ion-router-outlet></ion-router-outlet>
   </div>
+  <app-create-task-modal></app-create-task-modal>
 </ion-app>

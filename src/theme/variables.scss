@@ -1,10 +1,10 @@
 :root {
-  --ion-background-color: #ffffff;
-  --ion-text-color: #1f1f1f;
-  --primary-color: #4f6df5;
-  --primary-shade: #3d5bd9;
-  --accent-color: #e8eaff;
-  --shadow-color: rgba(0, 0, 0, 0.05);
+  --ion-background-color: #f4f5f8;
+  --ion-text-color: #212121;
+  --primary-color: #388e3c;
+  --primary-shade: #2b6a2e;
+  --accent-color: #c8e6c9;
+  --shadow-color: rgba(0, 0, 0, 0.08);
 }
 
 ion-menu {
@@ -32,79 +32,6 @@ ion-item {
   font-size: 0.95rem;
 }
 
-ion-modal {
-  --border-radius: 16px;
-  --box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-  --max-width: 500px;
-}
-
-ion-modal ion-header {
-  border-bottom: 1px solid #ececec;
-}
-
-.modalContent {
-  padding: 16px;
-}
-
-ion-input,
-ion-textarea,
-ion-select {
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --background: var(--accent-color);
-  border-radius: 6px;
-  font-size: 0.95rem;
-}
-
-ion-textarea {
-  min-height: 80px;
-}
-
-.dateItem ion-input {
-  width: 48%;
-}
-
-.datetimeOverlay {
-  position: absolute;
-  z-index: 1000;
-  background: #ffffff;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-ion-datetime {
-  --background: #ffffff;
-  font-size: 0.9rem;
-  border-radius: 8px;
-}
-
-.customSelectContainer {
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-  padding: 8px;
-  margin-bottom: 8px;
-  border-radius: 6px;
-}
-
-.customSelectContainer ion-icon {
-  font-size: 20px;
-  color: var(--primary-color);
-  margin-right: 16px;
-}
-
-.customSelectContainer ion-select {
-  background: var(--accent-color);
-  flex: 1;
-  border-radius: 6px;
-  padding-left: 12px;
-  font-size: 0.95rem;
-}
-
 ion-button {
   --background: var(--primary-color);
   --background-hover: var(--primary-shade);
@@ -118,10 +45,6 @@ ion-button {
   font-weight: 500;
   font-size: 0.95rem;
   letter-spacing: 0.5px;
-}
-
-.cancelCreateTask {
-  font-size: 26px;
 }
 
 ion-icon {
