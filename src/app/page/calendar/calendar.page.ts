@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
   IonCard,
   IonCardContent,
@@ -12,15 +12,19 @@ import {CustomHeaderComponent} from "../../component/custom-header/custom-header
 import {TaskScheduleComponent} from "../../component/task-schedule/task-schedule.component";
 import {CommonModule} from "@angular/common";
 import {Task} from "../../model/Task";
+import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, CustomHeaderComponent, TaskScheduleComponent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonChip, IonIcon, IonItem, IonLabel, IonText]
+  imports: [IonContent, CommonModule, CustomHeaderComponent, TaskScheduleComponent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonChip, IonIcon, IonItem, IonLabel, IonText, CreateTaskModalComponent]
 })
 export class CalendarPage{
+  // Decorators
+  @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
+  // Variables
   selectedDate: Date = new Date();
   tasksSelectedDate: boolean = false;
   completedTasks: number = 3;
@@ -91,6 +95,10 @@ export class CalendarPage{
 
   getTimeFromTask(task: Task): string {
     return task.time || 'All day';
+  }
+
+  openModal(task?: Task): void {
+    this.taskModal.openModal(task);
   }
 
 }

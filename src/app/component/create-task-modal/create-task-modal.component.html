@@ -2,7 +2,7 @@
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Create Task</ion-title>
+        <ion-title>{{ createTaskForm.get('title')?.value ? 'Edit Task' : 'Create Task' }}</ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="cancelCreateTask()" [strong]="true">
             <ion-icon name="close-outline" class="cancel-create-task"></ion-icon>
@@ -38,7 +38,7 @@
             </div>
           </ion-item>
           <ion-item lines="none" class="item-checkbox-all-day">
-            <ion-checkbox (click)="allDayCheck()" label-placement="end" class="checkbox-all-day">All day</ion-checkbox>
+            <ion-checkbox [(ngModel)]="allDay" [ngModelOptions]="{standalone: true}" (ionChange)="allDayCheck()" label-placement="end" class="checkbox-all-day">All day</ion-checkbox>
           </ion-item>
           <div class="date-time-overlay" *ngIf="showDatePicker">
             <ion-datetime presentation="date" [(ngModel)]="selectedDate" [ngModelOptions]="{standalone: true}" (ionChange)="dateSelected()">
@@ -64,8 +64,9 @@
             </ion-select>
           </div>
         </ion-list>
-        <ion-button id="button-submit" type="submit" [disabled]="taskButtonDisabled">Create</ion-button>
-        <ion-popover
+        <ion-button id="button-submit" type="submit" [disabled]="taskButtonDisabled">
+          {{ createTaskForm.get('title')?.value ? 'Update' : 'Create' }}
+        </ion-button>        <ion-popover
           [event]="datePopoverEvent"
           [isOpen]="showDatePopover"
           (didDismiss)="showDatePopover = false">

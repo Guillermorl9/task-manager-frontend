@@ -16,7 +16,7 @@
   </div>
 
   <div class="quick-actions">
-    <ion-button fill="clear" id="open-create-task-modal" class="action-button">
+    <ion-button fill="clear" id="open-create-task-modal" class="action-button" (click)="openModal()">
       <ion-icon slot="start" name="add-outline"></ion-icon>
       Add Task
     </ion-button>
@@ -47,7 +47,7 @@
 
     <ion-card-content>
       <div class="task-list">
-        <ion-item *ngFor="let task of todaysTasks" lines="none" class="task-item">
+        <ion-item *ngFor="let task of todaysTasks" lines="none" class="task-item" (click)="openModal(task)">
           <ion-checkbox
             slot="start"
             [checked]="task.completed"
@@ -91,7 +91,7 @@
 
     <ion-card-content>
       <div class="task-list">
-        <ion-item *ngFor="let task of upcomingTasks" lines="none" class="task-item">
+        <ion-item *ngFor="let task of upcomingTasks" lines="none" class="task-item" (click)="openModal(task)">
           <ion-checkbox
             slot="start"
             [checked]="task.completed"
@@ -119,4 +119,5 @@
       </div>
     </ion-card-content>
   </ion-card>
+  <app-create-task-modal></app-create-task-modal>
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonContent,
@@ -29,35 +29,22 @@ import {
 } from 'ionicons/icons';
 import { CustomHeaderComponent } from '../../component/custom-header/custom-header.component';
 import { Task } from '../../model/Task';
+import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    IonContent,
-    IonCard,
-    IonCardContent,
-    IonCardHeader,
-    IonCardTitle,
-    IonItem,
-    IonLabel,
-    IonIcon,
-    IonButton,
-    IonChip,
-    IonProgressBar,
-    IonText,
-    IonCheckbox,
-    CustomHeaderComponent
+  imports: [CommonModule, RouterLink, IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonIcon, IonButton, IonChip, IonProgressBar, IonText, IonCheckbox, CustomHeaderComponent, CreateTaskModalComponent
   ]
 })
 export class HomePage {
+  // Decorators
+  @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
+  // Variables
   today: Date = new Date();
   formattedDate: string;
-
   completedTasks: number = 3;
   totalTasks: number = 7;
   completionRate: number = this.completedTasks / this.totalTasks;
@@ -144,4 +131,10 @@ export class HomePage {
   getTimeFromTask(task: Task): string {
     return task.time || 'All day';
   }
+
+  openModal(task?: Task): void {
+    this.taskModal.openModal(task);
+  }
+
+
 }

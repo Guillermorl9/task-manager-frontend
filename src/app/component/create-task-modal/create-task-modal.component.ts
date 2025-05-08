@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {addIcons} from "ionicons";
 import { addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline } from "ionicons/icons";
 import {FormGroup, FormsModule, ReactiveFormsModule, Validators, FormBuilder} from "@angular/forms";
@@ -13,6 +13,7 @@ import {
   IonTextarea, IonTitle, IonToolbar
 } from "@ionic/angular/standalone";
 import {CommonModule} from "@angular/common";
+import {Task} from "../../model/Task";
 
 @Component({
   selector: 'app-create-task-modal',
@@ -24,7 +25,6 @@ import {CommonModule} from "@angular/common";
 export class CreateTaskModalComponent {
   // Decorators
   @ViewChild('createTaskModal') createTaskModal!: IonModal;
-  //@Output() taskCreated = new EventEmitter<any>();
 
   // Variables
   createTaskForm: FormGroup;
@@ -57,7 +57,55 @@ export class CreateTaskModalComponent {
     });
   }
 
-  openModal() {
+  openModal(task?: Task) {
+    this.createTaskForm.reset({
+      title: '',
+      date: '',
+      time: '',
+      description: '',
+      list: 'list1'
+    });
+
+    this.allDay = false;
+    this.formattedDate = '';
+    this.formattedTime = '';
+    this.selectedDate = '';
+    this.selectedTime = '';
+
+    if (task) {
+      this.createTaskForm.patchValue({
+        title: task.title || '',
+        description: task.description || '',
+        list: 'list1'
+      });
+
+      if (task.date) {
+        this.selectedDate = task.date;
+        const date: Date = new Date(task.date);
+        this.formattedDate = date.toLocaleDateString('es-ES', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        this.createTaskForm.patchValue({ date: task.date });
+      }
+
+      if (task.time) {
+        const today: Date = new Date();
+        const [hours, minutes] = task.time.split(':');
+        today.setHours(parseInt(hours), parseInt(minutes));
+
+        this.selectedTime = today.toISOString();
+        this.formattedTime = today.toLocaleTimeString('es-ES', {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+        this.createTaskForm.patchValue({ time: this.selectedTime });
+      } else {
+        this.allDay = true;
+      }
+    }
+
     this.createTaskModal.present();
     return this.createTaskModal.onDidDismiss();
   }
@@ -129,7 +177,6 @@ export class CreateTaskModalComponent {
   // createTaskForm: Checkbox to set a task for the whole day
   allDayCheck(): void {
     this.showTimePicker = false;
-    this.allDay = !this.allDay;
 
     if (this.allDay) {
       this.formattedTime = '';
@@ -161,8 +208,6 @@ export class CreateTaskModalComponent {
       description: '',
       list: 'list1'
     });
-
-    //this.taskCreated.emit(taskData);
 
     this.createTaskModal.dismiss(taskData, 'confirm');
   }

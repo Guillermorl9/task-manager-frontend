@@ -19,7 +19,7 @@
 
     <ion-card-content>
       <div class="task-list">
-        <ion-item *ngFor="let task of getTasksForSelectedDate()" lines="none" class="task-item">
+        <ion-item *ngFor="let task of getTasksForSelectedDate()" lines="none" class="task-item" (click)="openModal(task)">
           <ion-checkbox
             slot="start"
             [checked]="task.completed"
@@ -51,4 +51,5 @@
       </div>
     </ion-card-content>
   </ion-card>
+  <app-create-task-modal></app-create-task-modal>
 </ion-content>
