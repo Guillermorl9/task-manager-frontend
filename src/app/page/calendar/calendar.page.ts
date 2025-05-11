@@ -13,6 +13,8 @@ import {TaskScheduleComponent} from "../../component/task-schedule/task-schedule
 import {CommonModule} from "@angular/common";
 import {Task} from "../../model/Task";
 import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
+import {addIcons} from "ionicons";
+import {ellipsisHorizontalOutline} from "ionicons/icons";
 
 @Component({
   selector: 'app-calendar',
@@ -66,7 +68,9 @@ export class CalendarPage{
     }
   ];
 
-  constructor() { }
+  constructor() {
+    addIcons({ellipsisHorizontalOutline})
+  }
 
   onDateSelected(date: Date): void {
     this.selectedDate = date;
