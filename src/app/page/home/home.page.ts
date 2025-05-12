@@ -132,7 +132,7 @@ export class HomePage {
     return task.time || 'All day';
   }
 
-  openModal(task?: Task): void {
+  openTaskModal(task?: Task): void {
     this.taskModal.openModal(task);
   }
 

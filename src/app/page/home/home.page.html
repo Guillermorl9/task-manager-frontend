@@ -16,7 +16,7 @@
   </div>
 
   <div class="quick-actions">
-    <ion-button fill="clear" id="open-create-task-modal" class="action-button" (click)="openModal()">
+    <ion-button fill="clear" id="open-create-task-modal" class="action-button" (click)="openTaskModal()">
       <ion-icon slot="start" name="add-outline"></ion-icon>
       Add Task
     </ion-button>
@@ -66,7 +66,7 @@
               </ion-text>
             </div>
           </div>
-          <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openModal(task)"></ion-icon>
+          <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openTaskModal(task)"></ion-icon>
         </ion-item>
 
         <ion-text *ngIf="todaysTasks.length === 0" color="medium" class="empty-tasks">
@@ -110,7 +110,7 @@
               </ion-text>
             </div>
           </div>
-          <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openModal(task)"></ion-icon>
+          <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openTaskModal(task)"></ion-icon>
         </ion-item>
 
         <ion-text *ngIf="upcomingTasks.length === 0" color="medium" class="empty-tasks">

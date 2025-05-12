@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonContent,
@@ -22,12 +22,15 @@ import {
   homeOutline,
   fitnessOutline,
   schoolOutline,
-  peopleOutline
+  peopleOutline,
+  timeOutline,
+  ellipsisHorizontalOutline
 } from 'ionicons/icons';
 import { CustomHeaderComponent } from '../../component/custom-header/custom-header.component';
 import { TaskList } from '../../model/TaskList';
 import {FormsModule} from "@angular/forms";
 import {Category} from "../../model/Category";
+import {TaskListDetailsComponent} from "../../component/task-list-details/task-list-details.component";
 
 @Component({
   selector: 'app-tasks-lists',
@@ -44,12 +47,15 @@ import {Category} from "../../model/Category";
     IonSearchbar,
     IonRippleEffect,
     CustomHeaderComponent,
-    FormsModule
+    FormsModule,
+    TaskListDetailsComponent
   ]
 })
 export class TasksListsPage {
   searchQuery: string = '';
   showSearch: boolean = false;
+  @ViewChild(TaskListDetailsComponent) taskListDetailsModal!: TaskListDetailsComponent;
+
 
   personalLists: TaskList[] = [
     {
@@ -136,12 +142,14 @@ export class TasksListsPage {
       homeOutline,
       fitnessOutline,
       schoolOutline,
-      peopleOutline
+      peopleOutline,
+      timeOutline,
+      ellipsisHorizontalOutline
     });
   }
 
   toggleSearch(): void {
-
+    this.showSearch = !this.showSearch;
   }
 
   getCompletedTasksCount(taskList: TaskList): number {
@@ -158,6 +166,6 @@ export class TasksListsPage {
   }
 
   openListDetails(taskList: TaskList): void {
-
+    this.taskListDetailsModal.openTaskListPopover(taskList);
   }
 }
