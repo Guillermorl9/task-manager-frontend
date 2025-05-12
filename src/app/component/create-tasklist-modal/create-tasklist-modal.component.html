@@ -1,0 +1,36 @@
+<ion-modal #createTaskListModal [backdropDismiss]="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Create task list</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cancelCreateTaskList()" [strong]="true">
+            <ion-icon name="close-outline" class="cancel-create-task"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="modal-content">
+      <form [formGroup]="createTaskListForm" (ngSubmit)="createTaskList()">
+        <ion-list lines="none" class="list-form">
+          <ion-item>
+            <ion-input type="text" formControlName="title" placeholder="Add a title" class="input-title"></ion-input>
+          </ion-item>
+          <div class="custom-select-container">
+            <div class="icon-list">
+              <ion-icon name="folder-outline"></ion-icon>
+            </div>
+            <ion-select interface="popover" formControlName="category" value="category1" class="select-category">
+              <ion-select-option value="category1">Personal</ion-select-option>
+              <ion-select-option value="category2">Work</ion-select-option>
+              <ion-select-option value="category3">Study</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-list>
+        <ion-button id="button-submit" type="submit" [disabled]="buttonCreateTaskListDisabled">
+          Create Task List
+        </ion-button>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>

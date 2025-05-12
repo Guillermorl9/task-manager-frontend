@@ -1,0 +1,30 @@
+.cancel-create-task {
+  font-size: 30px;
+  border-radius: 20px;
+}
+
+.input-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.custom-select-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.select-category {
+  background-color: var(--accent-color);
+  padding: 10px;
+  border-radius: 6px;
+  width: 40%;
+}
+
+.icon-list {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  width: 9%;
+}

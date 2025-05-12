@@ -24,25 +24,35 @@ import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CreateTaskModalComponent} from "./component/create-task-modal/create-task-modal.component";
+import {CreateTasklistModalComponent} from "./component/create-tasklist-modal/create-tasklist-modal.component";
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [RouterModule, CreateTaskModalComponent, IonApp, ReactiveFormsModule, IonTextarea, IonCheckbox, IonSelect, IonSelectOption, IonRouterOutlet, FormsModule, CommonModule, IonInput, IonDatetime, IonItem, IonList, IonContent, IonMenu, IonRouterLink, IonIcon, IonButton, IonLabel, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonListHeader],
+  imports: [RouterModule, CreateTaskModalComponent, CreateTasklistModalComponent, IonApp, ReactiveFormsModule, IonTextarea, IonCheckbox, IonSelect, IonSelectOption, IonRouterOutlet, FormsModule, CommonModule, IonInput, IonDatetime, IonItem, IonList, IonContent, IonMenu, IonRouterLink, IonIcon, IonButton, IonLabel, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonListHeader],
 })
 export class AppComponent {
   // Decorators
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
+  @ViewChild(CreateTasklistModalComponent) taskListModal!: CreateTasklistModalComponent;
   constructor() {
     addIcons({ addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline });
   }
 
-  openModal(): void {
-    this.taskModal.openModal().then((result) => {
+  openTaskModal(): void {
+    this.taskModal.openTaskModal().then((result) => {
       if (result && result.role === 'confirm' && result.data) {
         console.log('Tarea creada:', result.data);
       }
     });
+  }
+
+  openTaskListModal(): void {
+    this.taskListModal.openTaskListModal().then((result) => {
+      if (result && result.role === 'confirm' && result.data) {
+        console.log('Lista creada: ', result.data);
+      }
+    })
   }
 
   /*

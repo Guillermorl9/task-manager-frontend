@@ -57,7 +57,7 @@ export class CreateTaskModalComponent {
     });
   }
 
-  openModal(task?: Task) {
+  openTaskModal(task?: Task) {
     this.createTaskForm.reset({
       title: '',
       date: '',

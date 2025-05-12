@@ -72,7 +72,7 @@ export class TaskListDetailsComponent {
   }
 
   openTaskModal(task?: Task): void {
-    this.taskModal.openModal(task);
+    this.taskModal.openTaskModal(task);
   }
 
   dismissPopover(): void {

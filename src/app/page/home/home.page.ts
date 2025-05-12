@@ -133,7 +133,7 @@ export class HomePage {
   }
 
   openTaskModal(task?: Task): void {
-    this.taskModal.openModal(task);
+    this.taskModal.openTaskModal(task);
   }
 
 

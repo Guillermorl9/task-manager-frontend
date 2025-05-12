@@ -102,7 +102,7 @@ export class CalendarPage{
   }
 
   openModal(task?: Task): void {
-    this.taskModal.openModal(task);
+    this.taskModal.openTaskModal(task);
   }
 
 }
