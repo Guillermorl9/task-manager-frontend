@@ -31,6 +31,7 @@ import { TaskList } from '../../model/TaskList';
 import {FormsModule} from "@angular/forms";
 import {Category} from "../../model/Category";
 import {TaskListDetailsComponent} from "../../component/task-list-details/task-list-details.component";
+import {CreateCategoryModalComponent} from "../../component/create-category-modal/create-category-modal.component";
 
 @Component({
   selector: 'app-tasks-lists',
@@ -48,14 +49,18 @@ import {TaskListDetailsComponent} from "../../component/task-list-details/task-l
     IonRippleEffect,
     CustomHeaderComponent,
     FormsModule,
-    TaskListDetailsComponent
+    TaskListDetailsComponent,
+    CreateCategoryModalComponent
   ]
 })
 export class TasksListsPage {
-  searchQuery: string = '';
-  showSearch: boolean = false;
+  // Decorators
+  @ViewChild(CreateCategoryModalComponent) categoryModal!: CreateCategoryModalComponent;
   @ViewChild(TaskListDetailsComponent) taskListDetailsModal!: TaskListDetailsComponent;
 
+  // Variables
+  searchQuery: string = '';
+  showSearch: boolean = false;
 
   personalLists: TaskList[] = [
     {
@@ -161,8 +166,12 @@ export class TasksListsPage {
     return (this.getCompletedTasksCount(taskList) / taskList.tasks.length) * 100;
   }
 
-  addNewList(): void {
-
+  openCreateCategoryModal(): void {
+    this.categoryModal.openCategoryModal().then((result) => {
+      if (result && result.role === 'confirm' && result.data) {
+        console.log('Categoría creada: ', result.data);
+      }
+    })
   }
 
   openListDetails(taskList: TaskList): void {

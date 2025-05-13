@@ -67,10 +67,11 @@
   </div>
 
   <div class="add-list-container">
-    <ion-button expand="block" class="add-list-button" (click)="addNewList()">
+    <ion-button expand="block" class="add-list-button" (click)="openCreateCategoryModal()">
       <ion-icon name="add-outline" slot="start"></ion-icon>
       Create New Category
     </ion-button>
   </div>
   <app-task-list-details></app-task-list-details>
+  <app-create-category-modal></app-create-category-modal>
 </ion-content>
