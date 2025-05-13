@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {
   IonButton,
-  IonButtons,
+  IonButtons, IonCard, IonCardContent,
   IonContent,
   IonHeader,
   IonIcon, IonInput, IonItem, IonList,
@@ -20,7 +20,7 @@ import {closeOutline, folderOutline} from "ionicons/icons";
   templateUrl: './create-tasklist-modal.component.html',
   styleUrls: ['./create-tasklist-modal.component.scss'],
   standalone: true,
-  imports: [IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, ReactiveFormsModule, CommonModule, IonList, IonItem, IonSelectOption, IonInput, IonSelect]
+  imports: [IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, ReactiveFormsModule, CommonModule, IonList, IonItem, IonSelectOption, IonInput, IonSelect, IonCard, IonCardContent]
 })
 export class CreateTasklistModalComponent {
   // Decorators

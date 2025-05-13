@@ -4,7 +4,7 @@ import { addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeO
 import {FormGroup, FormsModule, ReactiveFormsModule, Validators, FormBuilder} from "@angular/forms";
 import {RouterModule} from "@angular/router";
 import {
-  IonApp, IonButton, IonButtons,
+  IonApp, IonButton, IonButtons, IonCard, IonCardContent,
   IonCheckbox, IonContent, IonDatetime, IonHeader, IonIcon,
   IonInput, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonModal, IonPopover, IonRouterLink,
   IonRouterOutlet,
@@ -19,7 +19,7 @@ import {Task} from "../../model/Task";
   selector: 'app-create-task-modal',
   templateUrl: './create-task-modal.component.html',
   styleUrls: ['./create-task-modal.component.scss'],
-  imports: [RouterModule, IonApp, ReactiveFormsModule, IonTextarea, IonCheckbox, IonSelect, IonSelectOption, IonRouterOutlet, FormsModule, CommonModule, IonInput, IonDatetime, IonItem, IonList, IonContent, IonMenu, IonRouterLink, IonIcon, IonButton, IonLabel, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonListHeader, IonPopover],
+  imports: [RouterModule, IonCard, IonCardContent, IonApp, ReactiveFormsModule, IonTextarea, IonCheckbox, IonSelect, IonSelectOption, IonRouterOutlet, FormsModule, CommonModule, IonInput, IonDatetime, IonItem, IonList, IonContent, IonMenu, IonRouterLink, IonIcon, IonButton, IonLabel, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonListHeader, IonPopover],
   standalone: true
 })
 export class CreateTaskModalComponent {

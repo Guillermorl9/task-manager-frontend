@@ -1,30 +1,45 @@
 .cancel-create-task {
-  font-size: 30px;
+  font-size: 28px;
   border-radius: 20px;
 }
 
+.modal-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  margin: 16px;
+}
+
 .input-title {
-  font-size: 20px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  padding: 8px 12px;
+}
+
+.form-group {
+  margin-bottom: 16px;
 }
 
 .custom-select-container {
   display: flex;
-  flex-direction: row;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  align-items: center;
 }
 
 .select-category {
   background-color: var(--accent-color);
-  padding: 10px;
   border-radius: 6px;
-  width: 40%;
+  padding: 10px;
+  width: 100%;
 }
 
 .icon-list {
-  margin-left: 10px;
+  margin-right: 12px;
   display: flex;
   align-items: center;
-  width: 9%;
+}
+
+.submit-task-button {
+  --background: var(--accent-color);
+  --color: var(--primary-color);
+  --border-radius: 12px;
+  font-weight: 500;
+  margin-top: 20px;
 }

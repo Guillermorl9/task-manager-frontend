@@ -2,7 +2,9 @@
   <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>{{ createTaskForm.get('title')?.value ? 'Edit Task' : 'Create Task' }}</ion-title>
+        <ion-title>
+          {{ createTaskForm.get('title')?.value ? 'Edit Task' : 'Create Task' }}
+        </ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="cancelCreateTask()" [strong]="true">
             <ion-icon name="close-outline" class="cancel-create-task"></ion-icon>
@@ -10,91 +12,120 @@
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
     <ion-content class="modal-content">
-      <form [formGroup]="createTaskForm" (ngSubmit)="createTask()">
-        <ion-list lines="none" class="list-form">
-          <ion-item>
-            <ion-input type="text" formControlName="title" placeholder="Add a title" class="input-title"></ion-input>
-          </ion-item>
-          <ion-item class="date-item">
-            <ion-icon slot="start" name="time-outline"></ion-icon>
-            <div class="date-time-inputs">
-              <ion-input
-                class="date-input"
-                placeholder="Select date"
-                [value]="formattedDate"
-                readonly
-                (click)="openDatePopover($event)">
-              </ion-input>
+      <ion-card class="modal-card">
+        <ion-card-content>
+          <form [formGroup]="createTaskForm" (ngSubmit)="createTask()">
+            <ion-list lines="none" class="list-form">
 
-              <ion-input
-                class="time-input"
-                *ngIf="!allDay"
-                placeholder="Select time"
-                [value]="formattedTime"
-                readonly
-                (click)="openTimePopover($event)">
-              </ion-input>
-            </div>
-          </ion-item>
-          <ion-item lines="none" class="item-checkbox-all-day">
-            <ion-checkbox [(ngModel)]="allDay" [ngModelOptions]="{standalone: true}" (ionChange)="allDayCheck()" label-placement="end" class="checkbox-all-day">All day</ion-checkbox>
-          </ion-item>
-          <div class="date-time-overlay" *ngIf="showDatePicker">
-            <ion-datetime presentation="date" [(ngModel)]="selectedDate" [ngModelOptions]="{standalone: true}" (ionChange)="dateSelected()">
-            </ion-datetime>
-          </div>
-          <div class="date-time-overlay" *ngIf="showTimePicker">
-            <ion-datetime presentation="time" [(ngModel)]="selectedTime" [ngModelOptions]="{standalone: true}" (ionChange)="timeSelected()">
-            </ion-datetime>
-          </div>
-          <ion-item>
-            <ion-icon slot="start" name="reorder-three-outline"></ion-icon>
-            <ion-textarea placeholder="Add a description" class="text-area-description" formControlName="description" auto-grow="true">
-            </ion-textarea>
-          </ion-item>
-          <div class="custom-select-container">
-            <div class="icon-list">
-              <ion-icon name="reader-outline"></ion-icon>
-            </div>
-            <ion-select interface="popover" formControlName="list" value="list1" class="select-list">
-              <ion-select-option value="list1">Household chores</ion-select-option>
-              <ion-select-option value="list2">Exercise routine</ion-select-option>
-              <ion-select-option value="list3">Assorted tasks</ion-select-option>
-            </ion-select>
-          </div>
-        </ion-list>
-        <ion-button id="button-submit" type="submit" [disabled]="taskButtonDisabled">
-          {{ createTaskForm.get('title')?.value ? 'Update' : 'Create' }}
-        </ion-button>        <ion-popover
-          [event]="datePopoverEvent"
-          [isOpen]="showDatePopover"
-          (didDismiss)="showDatePopover = false">
-          <ng-template>
-            <ion-datetime
-              presentation="date"
-              [(ngModel)]="selectedDate"
-              [ngModelOptions]="{standalone: true}"
-              (ionChange)="dateSelected()">
-            </ion-datetime>
-          </ng-template>
-        </ion-popover>
+              <ion-item class="form-group">
+                <ion-input
+                  type="text"
+                  formControlName="title"
+                  placeholder="Add a title"
+                  class="input-title">
+                </ion-input>
+              </ion-item>
 
-        <ion-popover
-          [event]="timePopoverEvent"
-          [isOpen]="showTimePopover"
-          (didDismiss)="showTimePopover = false">
-          <ng-template>
-            <ion-datetime
-              presentation="time"
-              [(ngModel)]="selectedTime"
-              [ngModelOptions]="{standalone: true}"
-              (ionChange)="timeSelected()">
-            </ion-datetime>
-          </ng-template>
-        </ion-popover>
+              <ion-item class="form-group date-item">
+                <ion-icon slot="start" name="time-outline"></ion-icon>
+                <div class="date-time-inputs">
+                  <ion-input
+                    class="date-input"
+                    placeholder="Select date"
+                    [value]="formattedDate"
+                    readonly
+                    (click)="openDatePopover($event)">
+                  </ion-input>
+                  <ion-input
+                    class="time-input"
+                    *ngIf="!allDay"
+                    placeholder="Select time"
+                    [value]="formattedTime"
+                    readonly
+                    (click)="openTimePopover($event)">
+                  </ion-input>
+                </div>
+              </ion-item>
 
-      </form>
+              <ion-item lines="none" class="form-group">
+                <ion-checkbox
+                  [(ngModel)]="allDay"
+                  [ngModelOptions]="{standalone: true}"
+                  (ionChange)="allDayCheck()"
+                  label-placement="end"
+                  class="checkbox-all-day">
+                  All day
+                </ion-checkbox>
+              </ion-item>
+
+              <ion-item class="form-group">
+                <ion-icon slot="start" name="reorder-three-outline"></ion-icon>
+                <ion-textarea
+                  placeholder="Add a description"
+                  class="text-area-description"
+                  formControlName="description"
+                  auto-grow="true">
+                </ion-textarea>
+              </ion-item>
+
+              <div class="form-group custom-select-container">
+                <div class="icon-list">
+                  <ion-icon name="reader-outline"></ion-icon>
+                </div>
+                <ion-select
+                  interface="popover"
+                  formControlName="list"
+                  class="select-list">
+                  <ion-select-option value="list1">Household chores</ion-select-option>
+                  <ion-select-option value="list2">Exercise routine</ion-select-option>
+                  <ion-select-option value="list3">Assorted tasks</ion-select-option>
+                </ion-select>
+              </div>
+
+              <ion-button
+                expand="block"
+                type="submit"
+                [disabled]="taskButtonDisabled"
+                class="submit-task-button">
+                {{ createTaskForm.get('title')?.value ? 'Update' : 'Create' }}
+              </ion-button>
+
+            </ion-list>
+          </form>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Date Popover -->
+      <ion-popover
+        [event]="datePopoverEvent"
+        [isOpen]="showDatePopover"
+        (didDismiss)="showDatePopover = false">
+        <ng-template>
+          <ion-datetime
+            presentation="date"
+            [(ngModel)]="selectedDate"
+            [ngModelOptions]="{standalone: true}"
+            (ionChange)="dateSelected()">
+          </ion-datetime>
+        </ng-template>
+      </ion-popover>
+
+      <!-- Time Popover -->
+      <ion-popover
+        [event]="timePopoverEvent"
+        [isOpen]="showTimePopover"
+        (didDismiss)="showTimePopover = false">
+        <ng-template>
+          <ion-datetime
+            presentation="time"
+            [(ngModel)]="selectedTime"
+            [ngModelOptions]="{standalone: true}"
+            (ionChange)="timeSelected()">
+          </ion-datetime>
+        </ng-template>
+      </ion-popover>
     </ion-content>
   </ng-template>
 </ion-modal>
