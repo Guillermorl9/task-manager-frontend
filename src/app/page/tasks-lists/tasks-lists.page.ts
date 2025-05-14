@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonContent,
@@ -32,6 +32,7 @@ import {FormsModule} from "@angular/forms";
 import {Category} from "../../model/Category";
 import {TaskListDetailsComponent} from "../../component/task-list-details/task-list-details.component";
 import {CreateCategoryModalComponent} from "../../component/create-category-modal/create-category-modal.component";
+import {TaskManagerService} from "../../service/task-manager.service";
 
 @Component({
   selector: 'app-tasks-lists',
@@ -53,86 +54,18 @@ import {CreateCategoryModalComponent} from "../../component/create-category-moda
     CreateCategoryModalComponent
   ]
 })
-export class TasksListsPage {
+export class TasksListsPage implements OnInit {
   // Decorators
   @ViewChild(CreateCategoryModalComponent) categoryModal!: CreateCategoryModalComponent;
   @ViewChild(TaskListDetailsComponent) taskListDetailsModal!: TaskListDetailsComponent;
 
+  // Services
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
+
   // Variables
   searchQuery: string = '';
   showSearch: boolean = false;
-
-  personalLists: TaskList[] = [
-    {
-      title: 'Household Chores',
-      tasks: [
-        { title: 'Clean kitchen', date: '2025-05-02', completed: false },
-        { title: 'Take out trash', date: '2025-05-02', completed: true },
-        { title: 'Water plants', date: '2025-05-03', completed: false }
-      ]
-    },
-    {
-      title: 'Exercise Routine',
-      tasks: [
-        { title: 'Morning run', date: '2025-05-02', completed: true },
-        { title: 'Gym workout', date: '2025-05-04', completed: false }
-      ]
-    },
-    {
-      title: 'Shopping List',
-      tasks: [
-        { title: 'Buy groceries', date: '2025-05-03', completed: false },
-        { title: 'Get new shoes', date: '2025-05-05', completed: false }
-      ]
-    }
-  ];
-
-  workLists: TaskList[] = [
-    {
-      title: 'Project Tasks',
-      tasks: [
-        { title: 'Complete UI design', date: '2025-05-02', completed: true },
-        { title: 'Write documentation', date: '2025-05-03', completed: false },
-        { title: 'Client presentation', date: '2025-05-04', completed: false },
-        { title: 'Code review', date: '2025-05-04', completed: false }
-      ]
-    },
-    {
-      title: 'Admin Tasks',
-      tasks: [
-        { title: 'Send weekly report', date: '2025-05-03', completed: false },
-        { title: 'Update timesheet', date: '2025-05-02', completed: true }
-      ]
-    }
-  ];
-
-  studyLists: TaskList[] = [
-    {
-      title: 'Angular Course',
-      tasks: [
-        { title: 'Complete module 5', date: '2025-05-03', completed: false },
-        { title: 'Practice exercises', date: '2025-05-04', completed: false }
-      ]
-    }
-  ];
-
-  allTaskSections: Category[] = [
-    {
-      title: 'Personal',
-      icon: 'home-outline',
-      lists: this.personalLists
-    },
-    {
-      title: 'Work',
-      icon: 'briefcase-outline',
-      lists: this.workLists
-    },
-    {
-      title: 'Study',
-      icon: 'school-outline',
-      lists: this.studyLists
-    }
-  ];
+  allCategories: Category[] = [];
 
   constructor() {
     addIcons({
@@ -153,6 +86,12 @@ export class TasksListsPage {
     });
   }
 
+  ngOnInit(): void {
+    this.taskManagerService.categories$.subscribe((categories) => {
+      this.allCategories = categories;
+    });
+  }
+
   toggleSearch(): void {
     this.showSearch = !this.showSearch;
   }
@@ -170,8 +109,13 @@ export class TasksListsPage {
     this.categoryModal.openCategoryModal().then((result) => {
       if (result && result.role === 'confirm' && result.data) {
         console.log('Categoría creada: ', result.data);
+        this.createCategory(result.data);
       }
     })
+  }
+
+  private createCategory(category: Category): void {
+    this.taskManagerService.addCategory(category);
   }
 
   openListDetails(taskList: TaskList): void {

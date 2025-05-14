@@ -23,11 +23,11 @@
     </div>
   </div>
 
-  <div class="category-section" *ngFor="let section of allTaskSections">
+  <div class="category-section" *ngFor="let section of allCategories">
     <div class="category-header">
       <ion-icon [name]="section.icon" class="category-icon"></ion-icon>
       <h2 class="category-title">{{ section.title }}</h2>
-      <ion-badge color="primary" mode="ios">{{ section.lists.length }}</ion-badge>
+      <!-- <ion-badge color="primary" mode="ios">{{ section.lists.length }}</ion-badge> -->
     </div>
 
     <div class="lists-grid">
