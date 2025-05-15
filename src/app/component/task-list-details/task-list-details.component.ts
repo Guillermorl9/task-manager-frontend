@@ -1,26 +1,11 @@
 import {Component, ViewChild} from '@angular/core';
-import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardTitle,
-  IonCheckbox,
-  IonChip,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonText,
-  IonPopover
-} from "@ionic/angular/standalone";
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonChip, IonIcon, IonItem, IonLabel, IonText, IonPopover } from "@ionic/angular/standalone";
 import {NgForOf, NgIf} from "@angular/common";
 import {TaskList} from "../../model/TaskList";
 import {Task} from "../../model/Task";
 import {CreateTaskModalComponent} from "../create-task-modal/create-task-modal.component";
 import { addIcons } from 'ionicons';
-import {
-  timeOutline,
-  ellipsisHorizontalOutline
-} from 'ionicons/icons';
+import { timeOutline, ellipsisHorizontalOutline, eyeOutline, eyeOffOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-task-list-details',
@@ -45,16 +30,21 @@ import {
   ]
 })
 export class TaskListDetailsComponent {
+  // Decorators
   @ViewChild('taskDetailsPopover') popover!: IonPopover;
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
 
+  // Variables
   currentTaskList: TaskList = {title: '', tasks: []};
   isPopoverOpen: boolean = false;
+  showCompleted: boolean = true;
 
   constructor() {
     addIcons({
       timeOutline,
-      ellipsisHorizontalOutline
+      ellipsisHorizontalOutline,
+      eyeOutline,
+      eyeOffOutline
     });
   }
 
@@ -75,7 +65,11 @@ export class TaskListDetailsComponent {
     this.taskModal.openTaskModal(task);
   }
 
-  dismissPopover(): void {
-    this.popover?.dismiss();
+  getActiveTasks(): Task[] {
+    return this.currentTaskList.tasks.filter(task => !task.completed);
+  }
+
+  getCompletedTasks(): Task[] {
+    return this.currentTaskList.tasks.filter(task => task.completed);
   }
 }

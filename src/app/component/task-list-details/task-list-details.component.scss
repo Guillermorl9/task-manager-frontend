@@ -202,3 +202,34 @@ ion-fab-button {
     margin-right: auto;
   }
 }
+
+.task-section {
+  margin-bottom: 16px;
+}
+
+.task-section-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.task-filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.completed-task {
+  background-color: #f8f8f8;
+  opacity: 0.85;
+}
+
+ion-chip {
+  cursor: pointer;
+}
+
+ion-chip ion-icon {
+  margin-right: 4px;
+}
