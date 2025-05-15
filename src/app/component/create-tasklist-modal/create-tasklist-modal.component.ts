@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {
   IonButton,
   IonButtons, IonCard, IonCardContent,
@@ -13,6 +13,9 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {addIcons} from "ionicons";
 import {CommonModule} from "@angular/common";
 import {closeOutline, folderOutline} from "ionicons/icons";
+import {Category} from "../../model/Category";
+import {TaskManagerService} from "../../service/task-manager.service";
+import {TaskList} from "../../model/TaskList";
 
 
 @Component({
@@ -20,15 +23,19 @@ import {closeOutline, folderOutline} from "ionicons/icons";
   templateUrl: './create-tasklist-modal.component.html',
   styleUrls: ['./create-tasklist-modal.component.scss'],
   standalone: true,
-  imports: [IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, ReactiveFormsModule, CommonModule, IonList, IonItem, IonSelectOption, IonInput, IonSelect, IonCard, IonCardContent]
+  imports: [IonModal, ReactiveFormsModule, CommonModule, IonHeader, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonContent, ReactiveFormsModule, CommonModule, IonList, IonItem, IonSelectOption, IonInput, IonSelect, IonCard, IonCardContent]
 })
-export class CreateTasklistModalComponent {
+export class CreateTasklistModalComponent implements OnInit {
   // Decorators
   @ViewChild('createTaskListModal') createTaskListModal!: IonModal;
+
+  // Services
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
 
   // Variables
   createTaskListForm: FormGroup;
   buttonCreateTaskListDisabled: boolean = true;
+  allCategories: Category[] = [];
 
   constructor(private form: FormBuilder) {
     addIcons({closeOutline, folderOutline});
@@ -40,6 +47,12 @@ export class CreateTasklistModalComponent {
 
     this.createTaskListForm.valueChanges.subscribe(() => {
       this.buttonCreateTaskListDisabled = !this.createTaskListForm.get('title')?.value;
+    });
+  }
+
+  ngOnInit(): void {
+    this.taskManagerService.categories$.subscribe((categories: Category[]) => {
+      this.allCategories = categories;
     });
   }
 
@@ -67,15 +80,18 @@ export class CreateTasklistModalComponent {
       this.createTaskListForm.markAllAsTouched();
       return;
     }
+    const selectedCategory = this.allCategories.find(cat => cat.title === this.createTaskListForm.value.category);
 
-    const taskData = {...this.createTaskListForm.value};
-
+    const taskList: TaskList = {
+      title: this.createTaskListForm.value.title,
+      tasks: []
+    }
     this.createTaskListForm.reset({
       title: '',
       category: 'category1'
     });
 
-    this.createTaskListModal.dismiss(taskData, 'confirm');
+    this.createTaskListModal.dismiss({ taskList, category: selectedCategory }, 'confirm');
   }
 
 

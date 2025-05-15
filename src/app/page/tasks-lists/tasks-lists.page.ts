@@ -114,8 +114,13 @@ export class TasksListsPage implements OnInit {
     })
   }
 
-  private createCategory(category: Category): void {
-    this.taskManagerService.addCategory(category);
+  private createCategory(categoryData: {title: string, icon: string}): void {
+    const newCategory: Category = {
+      ...categoryData,
+      lists: []
+    };
+
+    this.taskManagerService.addCategory(newCategory);
   }
 
   openListDetails(taskList: TaskList): void {

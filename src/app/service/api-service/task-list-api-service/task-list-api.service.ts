@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {TaskList} from "../../../model/TaskList";
+import {Category} from "../../../model/Category";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class TaskListApiService {
 
   }
 
-  createTaskList(userId: number, categoryId: number, taskList: TaskList): void {
+  createTaskList(userId: number, categoryId: Category, taskList: TaskList): void {
 
   }
 

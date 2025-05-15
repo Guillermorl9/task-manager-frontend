@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import {
   IonApp,
   IonContent,
@@ -25,6 +25,7 @@ import {FormsModule} from "@angular/forms";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CreateTaskModalComponent} from "./component/create-task-modal/create-task-modal.component";
 import {CreateTasklistModalComponent} from "./component/create-tasklist-modal/create-tasklist-modal.component";
+import {TaskManagerService} from "./service/task-manager.service";
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,9 @@ export class AppComponent {
   // Decorators
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
   @ViewChild(CreateTasklistModalComponent) taskListModal!: CreateTasklistModalComponent;
+
+  // Services
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
   constructor() {
     addIcons({ addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline });
   }
@@ -50,6 +54,7 @@ export class AppComponent {
   openTaskListModal(): void {
     this.taskListModal.openTaskListModal().then((result) => {
       if (result && result.role === 'confirm' && result.data) {
+        this.taskManagerService.addTaskList(result.data.taskList, result.data.category);
         console.log('Lista creada: ', result.data);
       }
     })

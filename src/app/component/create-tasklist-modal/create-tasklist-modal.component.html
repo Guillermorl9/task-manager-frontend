@@ -34,9 +34,7 @@
                   interface="popover"
                   formControlName="category"
                   class="select-category">
-                  <ion-select-option value="category1">Personal</ion-select-option>
-                  <ion-select-option value="category2">Work</ion-select-option>
-                  <ion-select-option value="category3">Study</ion-select-option>
+                  <ion-select-option *ngFor="let cat of allCategories" value="{{cat.title}}">{{cat.title}}</ion-select-option>
                 </ion-select>
               </div>
 
