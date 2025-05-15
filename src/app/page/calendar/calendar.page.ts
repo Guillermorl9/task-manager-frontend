@@ -14,7 +14,8 @@ import {CommonModule} from "@angular/common";
 import {Task} from "../../model/Task";
 import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
 import {addIcons} from "ionicons";
-import {ellipsisHorizontalOutline} from "ionicons/icons";
+import {ellipsisHorizontalOutline,   eyeOutline, eyeOffOutline } from "ionicons/icons";
+import {TaskList} from "../../model/TaskList";
 
 @Component({
   selector: 'app-calendar',
@@ -32,6 +33,7 @@ export class CalendarPage{
   completedTasks: number = 3;
   totalTasks: number = 7;
   completionRate: number = this.completedTasks / this.totalTasks;
+  showCompleted: boolean = true;
 
   allTasks: Task[] = [
     {
@@ -69,7 +71,7 @@ export class CalendarPage{
   ];
 
   constructor() {
-    addIcons({ellipsisHorizontalOutline})
+    addIcons({ellipsisHorizontalOutline, eyeOutline, eyeOffOutline })
   }
 
   onDateSelected(date: Date): void {
@@ -101,8 +103,16 @@ export class CalendarPage{
     return task.time || 'All day';
   }
 
-  openModal(task?: Task): void {
+  openTaskModal(task?: Task): void {
     this.taskModal.openTaskModal(task);
+  }
+
+  getActiveTasks(tasks: Task[]): Task[] {
+    return tasks.filter(task => !task.completed);
+  }
+
+  getCompletedTasks(tasks: Task[]): Task[] {
+    return tasks.filter(task => task.completed);
   }
 
 }

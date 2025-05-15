@@ -25,11 +25,13 @@ import {
   statsChartOutline,
   timeOutline,
   listOutline,
-  ellipsisHorizontalOutline
+  ellipsisHorizontalOutline,
+  eyeOutline, eyeOffOutline
 } from 'ionicons/icons';
 import { CustomHeaderComponent } from '../../component/custom-header/custom-header.component';
 import { Task } from '../../model/Task';
 import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
+import {TaskList} from "../../model/TaskList";
 
 @Component({
   selector: 'app-home',
@@ -48,6 +50,9 @@ export class HomePage {
   completedTasks: number = 3;
   totalTasks: number = 7;
   completionRate: number = this.completedTasks / this.totalTasks;
+  showTodayCompleted: boolean = true;
+  showUpcomingCompleted: boolean = true;
+
 
   todaysTasks: Task[] = [
     {
@@ -101,6 +106,16 @@ export class HomePage {
     }
   ];
 
+  todayTaskList: TaskList = {
+    title: 'Today',
+    tasks: this.todaysTasks
+  }
+
+  upcomingTaskList: TaskList = {
+    title: 'Upcoming',
+    tasks: this.upcomingTasks
+  }
+
   constructor() {
     addIcons({
       addOutline,
@@ -110,7 +125,7 @@ export class HomePage {
       statsChartOutline,
       timeOutline,
       listOutline,
-      ellipsisHorizontalOutline
+      ellipsisHorizontalOutline, eyeOutline, eyeOffOutline
     });
 
     const options: Intl.DateTimeFormatOptions = {
@@ -134,6 +149,14 @@ export class HomePage {
 
   openTaskModal(task?: Task): void {
     this.taskModal.openTaskModal(task);
+  }
+
+  getActiveTasks(taskList: TaskList): Task[] {
+    return taskList.tasks.filter(task => !task.completed);
+  }
+
+  getCompletedTasks(taskList: TaskList): Task[] {
+    return taskList.tasks.filter(task => task.completed);
   }
 
 

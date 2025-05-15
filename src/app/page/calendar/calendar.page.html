@@ -11,44 +11,66 @@
           <ion-icon name="time-outline"></ion-icon>
           Tasks for {{ selectedDate | date: 'longDate' }}
         </ion-card-title>
-        <ion-chip color="primary" outline>
-          <ion-label>{{ getTasksForSelectedDate().length }}</ion-label>
-        </ion-chip>
+        <div class="task-filter-controls">
+          <ion-chip [color]="showCompleted ? 'primary' : 'medium'" (click)="showCompleted = !showCompleted">
+            <ion-icon *ngIf="!showCompleted" name="eye-outline"></ion-icon>
+            <ion-icon *ngIf="showCompleted" name="eye-off-outline"></ion-icon>
+            <ion-label>{{ showCompleted ? 'Hide completed' : 'Show Completed' }}</ion-label>
+          </ion-chip>
+        </div>
       </div>
     </ion-card-header>
 
     <ion-card-content>
-      <div class="task-list">
-        <ion-item *ngFor="let task of getTasksForSelectedDate()" lines="none" class="task-item">
-          <ion-checkbox
-            slot="start"
-            [checked]="task.completed"
-            color="primary"
-            (ionChange)="toggleTaskStatus(task)"
-          ></ion-checkbox>
-          <div class="task-content">
-            <ion-label [class.completed]="task.completed">{{ task.title }}</ion-label>
-            <div class="task-details">
-              <span class="task-time">
-                <ion-icon name="time-outline"></ion-icon>
-                {{ getTimeFromTask(task) }}
-              </span>
-              <ion-text *ngIf="task.description" class="task-description">
-                {{ task.description }}
-              </ion-text>
+      <div class="task-section" *ngIf="getActiveTasks(getTasksForSelectedDate()).length > 0">
+        <div class="task-section-title" *ngIf="getCompletedTasks(getTasksForSelectedDate()).length > 0 && showCompleted">Active</div>
+        <div class="task-list">
+          <ion-item *ngFor="let task of getActiveTasks(getTasksForSelectedDate())" lines="none" class="task-item">
+            <ion-checkbox slot="start" [checked]="task.completed" color="primary" (ionChange)="toggleTaskStatus(task)"></ion-checkbox>
+            <div class="task-content">
+              <ion-label>{{ task.title }}</ion-label>
+              <div class="task-details">
+                  <span class="task-time">
+                    <ion-icon name="time-outline"></ion-icon> {{ getTimeFromTask(task) }}
+                  </span>
+                <ion-text *ngIf="task.description" class="task-description">
+                  {{ task.description }}
+                </ion-text>
+              </div>
             </div>
-          </div>
-          <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon"  (click)="openModal(task)"></ion-icon>
-        </ion-item>
-
-        <ion-text
-          *ngIf="getTasksForSelectedDate().length === 0"
-          color="medium"
-          class="empty-tasks"
-        >
-          <em>No tasks for this day. Enjoy your time!</em>
-        </ion-text>
+            <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openTaskModal(task)"></ion-icon>
+          </ion-item>
+        </div>
       </div>
+
+      <div class="task-section" *ngIf="getCompletedTasks(getTasksForSelectedDate()).length > 0 && showCompleted">
+        <div class="task-section-title">Completed</div>
+        <div class="task-list">
+          <ion-item *ngFor="let task of getCompletedTasks(getTasksForSelectedDate())" lines="none" class="task-item completed-task">
+            <ion-checkbox slot="start" [checked]="task.completed" color="primary" (ionChange)="toggleTaskStatus(task)"></ion-checkbox>
+            <div class="task-content">
+              <ion-label class="completed">{{ task.title }}</ion-label>
+              <div class="task-details">
+                  <span class="task-time">
+                    <ion-icon name="time-outline"></ion-icon> {{ getTimeFromTask(task) }}
+                  </span>
+                <ion-text *ngIf="task.description" class="task-description">
+                  {{ task.description }}
+                </ion-text>
+              </div>
+            </div>
+            <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openTaskModal(task)"></ion-icon>
+          </ion-item>
+        </div>
+      </div>
+
+      <ion-text
+        *ngIf="getTasksForSelectedDate().length === 0"
+        color="medium"
+        class="empty-tasks"
+      >
+        <em>No tasks for this day. Enjoy your time!</em>
+      </ion-text>
     </ion-card-content>
   </ion-card>
   <app-create-task-modal></app-create-task-modal>
