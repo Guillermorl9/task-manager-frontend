@@ -78,9 +78,7 @@
                   interface="popover"
                   formControlName="list"
                   class="select-list">
-                  <ion-select-option value="list1">Household chores</ion-select-option>
-                  <ion-select-option value="list2">Exercise routine</ion-select-option>
-                  <ion-select-option value="list3">Assorted tasks</ion-select-option>
+                  <ion-select-option *ngFor="let list of allTaskLists" value="{{list.title}}">{{list.title}}</ion-select-option>
                 </ion-select>
               </div>
 

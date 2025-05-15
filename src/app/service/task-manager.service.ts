@@ -2,9 +2,10 @@ import {inject, Injectable} from '@angular/core';
 import {TaskApiService} from "./api-service/task-api-service/task-api.service";
 import {TaskListApiService} from "./api-service/task-list-api-service/task-list-api.service";
 import {CategoryApiService} from "./api-service/category-api-service/category-api.service";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, map, Observable} from "rxjs";
 import {Category} from "../model/Category";
 import {TaskList} from "../model/TaskList";
+import {Task} from "../model/Task";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,15 @@ export class TaskManagerService {
   // State variables
   private categories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
   public categories$: Observable<Category[]> = this.categories.asObservable();
-
+  public taskLists$: Observable<TaskList[]> = this.categories$.pipe(
+    map((categories: Category[]) => {
+      const allTaskLists: TaskList[] = [];
+      for (const category of categories) {
+        allTaskLists.push(...category.lists);
+      }
+      return allTaskLists;
+    })
+  );
   constructor() {
     const categories: Category[] = this.categoryApiService.getCategoriesByUser(1);
     this.categories.next(categories);
@@ -39,5 +48,25 @@ export class TaskManagerService {
       this.taskListApiService.createTaskList(1, category, taskList);
     }
   }
+
+  addTask(task: Task, taskList: TaskList): void {
+    const currentCategories = this.categories.getValue();
+    let updated = false;
+
+    for (const category of currentCategories) {
+      const list = category.lists.find((l) => l.title === taskList.title);
+      if (list) {
+        list.tasks.push(task);
+        updated = true;
+        break;
+      }
+    }
+
+    if (updated) {
+      this.categories.next([...currentCategories]);
+      //this.taskApiService.createTask(1, taskList, task);
+    }
+  }
+
 
 }

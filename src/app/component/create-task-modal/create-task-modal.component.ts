@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, inject, Input, OnInit, ViewChild} from '@angular/core';
 import {addIcons} from "ionicons";
 import { addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline } from "ionicons/icons";
 import {FormGroup, FormsModule, ReactiveFormsModule, Validators, FormBuilder} from "@angular/forms";
@@ -14,6 +14,8 @@ import {
 } from "@ionic/angular/standalone";
 import {CommonModule} from "@angular/common";
 import {Task} from "../../model/Task";
+import {TaskList} from "../../model/TaskList";
+import {TaskManagerService} from "../../service/task-manager.service";
 
 @Component({
   selector: 'app-create-task-modal',
@@ -22,9 +24,12 @@ import {Task} from "../../model/Task";
   imports: [RouterModule, IonCard, IonCardContent, IonApp, ReactiveFormsModule, IonTextarea, IonCheckbox, IonSelect, IonSelectOption, IonRouterOutlet, FormsModule, CommonModule, IonInput, IonDatetime, IonItem, IonList, IonContent, IonMenu, IonRouterLink, IonIcon, IonButton, IonLabel, IonModal, IonHeader, IonToolbar, IonButtons, IonTitle, IonListHeader, IonPopover],
   standalone: true
 })
-export class CreateTaskModalComponent {
+export class CreateTaskModalComponent implements OnInit {
   // Decorators
   @ViewChild('createTaskModal') createTaskModal!: IonModal;
+
+  // Services
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
 
   // Variables
   createTaskForm: FormGroup;
@@ -40,6 +45,7 @@ export class CreateTaskModalComponent {
   showTimePopover: boolean = false;
   datePopoverEvent: any;
   timePopoverEvent: any;
+  allTaskLists: TaskList[] = [];
 
   constructor(private form: FormBuilder) {
     addIcons({ addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline });
@@ -55,6 +61,12 @@ export class CreateTaskModalComponent {
     this.createTaskForm.valueChanges.subscribe(() => {
       this.taskButtonDisabled = !(this.createTaskForm.get('title')?.value && this.createTaskForm.get('date')?.value);
     });
+  }
+
+  ngOnInit(): void {
+    this.taskManagerService.taskLists$.subscribe((taskLists: TaskList[]) => {
+      this.allTaskLists = taskLists;
+    })
   }
 
   openTaskModal(task?: Task) {
@@ -193,7 +205,15 @@ export class CreateTaskModalComponent {
       return;
     }
 
-    const taskData = {...this.createTaskForm.value};
+    const selectedList = this.allTaskLists.find(list => list.title === this.createTaskForm.value.list);
+
+    const task: Task = {
+      title: this.createTaskForm.value.title,
+      description: this.createTaskForm.value.description,
+      date: this.createTaskForm.value.date,
+      time: this.createTaskForm.value.time,
+      completed: false,
+    }
 
     this.formattedDate = '';
     this.formattedTime = '';
@@ -209,6 +229,6 @@ export class CreateTaskModalComponent {
       list: 'list1'
     });
 
-    this.createTaskModal.dismiss(taskData, 'confirm');
+    this.createTaskModal.dismiss({ task, list: selectedList }, 'confirm');
   }
 }

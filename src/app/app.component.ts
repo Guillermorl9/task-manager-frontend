@@ -46,7 +46,9 @@ export class AppComponent {
   openTaskModal(): void {
     this.taskModal.openTaskModal().then((result) => {
       if (result && result.role === 'confirm' && result.data) {
-        console.log('Tarea creada:', result.data);
+        const { task, list } = result.data;
+        this.taskManagerService.addTask(task, list);
+        console.log('Tarea creada:', task);
       }
     });
   }
