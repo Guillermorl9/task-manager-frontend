@@ -1,0 +1,39 @@
+<ion-content [fullscreen]="true" class="register-content">
+  <div class="register-container">
+
+    <h1 class="register-title">Create your account 🚀!</h1>
+    <p class="register-subtitle">Fill in the fields to get started</p>
+
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()" novalidate>
+
+      <ion-item lines="none" class="input-item" [class.invalid]="formulario.get('firstName')?.invalid && formulario.get('firstName')?.touched">
+        <ion-label position="floating">First name</ion-label>
+        <ion-input type="text" formControlName="firstName" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="input-item" [class.invalid]="formulario.get('lastName')?.invalid && formulario.get('lastName')?.touched">
+        <ion-label position="floating">Surname</ion-label>
+        <ion-input type="text" formControlName="lastName" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="input-item" [class.invalid]="formulario.get('email')?.invalid && formulario.get('email')?.touched">
+        <ion-label position="floating">E-mail address</ion-label>
+        <ion-input type="email" formControlName="email" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="input-item" [class.invalid]="formulario.get('password')?.invalid && formulario.get('password')?.touched">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" formControlName="password" required></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" type="submit" [disabled]="formulario.invalid" class="register-button">
+        Register
+      </ion-button>
+    </form>
+
+    <div class="login-prompt">
+      Already have an account? <a [routerLink]="['/login']">Login</a>
+    </div>
+
+  </div>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-content [fullscreen]="true" class="login-content">
+  <div class="login-container">
+
+    <h1 class="login-title">Hello again 👋</h1>
+    <p class="login-subtitle">Login with your email and password</p>
+
+    <form [formGroup]="formulario" (ngSubmit)="onSubmit()" novalidate>
+
+      <ion-item lines="none" class="input-item" [class.invalid]="formulario.get('email')?.invalid && formulario.get('email')?.touched">
+        <ion-label position="floating">E-mail address</ion-label>
+        <ion-input type="email" formControlName="email" required></ion-input>
+      </ion-item>
+
+      <ion-item lines="none" class="input-item" [class.invalid]="formulario.get('password')?.invalid && formulario.get('password')?.touched">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" formControlName="password" required></ion-input>
+      </ion-item>
+
+      <div class="forgot-password">
+        <a [routerLink]="['/recover-password']">Forgot your password?</a>
+      </div>
+
+      <ion-button expand="block" type="submit" [disabled]="formulario.invalid" class="login-button">
+        Login
+      </ion-button>
+    </form>
+
+    <div class="register-prompt">
+      Don't have an account? <a [routerLink]="['/register']">Register</a>
+    </div>
+
+  </div>
+</ion-content>

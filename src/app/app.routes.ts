@@ -17,5 +17,17 @@ export const routes: Routes = [
     path: 'tasks-lists',
     loadComponent: () => import('./page/tasks-lists/tasks-lists.page').then( m => m.TasksListsPage)
   },
+  {
+    path: 'login',
+    loadComponent: () => import('./page/login/login.page').then( m => m.LoginPage)
+  },
+  {
+    path: 'register',
+    loadComponent: () => import('./page/register/register.page').then( m => m.RegisterPage)
+  },
+  {
+    path: 'recover-password',
+    loadComponent: () => import('./page/recover-password/recover-password.page').then( m => m.RecoverPasswordPage)
+  },
 
 ];
