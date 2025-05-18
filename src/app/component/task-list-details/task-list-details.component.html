@@ -12,6 +12,7 @@
               <ion-icon *ngIf="showCompleted" name="eye-off-outline"></ion-icon>
               <ion-label>{{ showCompleted ? 'Hide completed' : 'Show Completed' }}</ion-label>
             </ion-chip>
+            <ion-icon name="trash-outline" color="danger" slot="end" class="options-icon" (click)="deleteTaskList()"></ion-icon>
           </div>
         </div>
       </ion-card-header>
@@ -33,6 +34,7 @@
                 </div>
               </div>
               <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openTaskModal(task)"></ion-icon>
+              <ion-icon name="trash-outline" color="danger" slot="end" class="options-icon" (click)="deleteTask()"></ion-icon>
             </ion-item>
           </div>
         </div>

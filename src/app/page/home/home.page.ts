@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonContent,
@@ -13,7 +13,7 @@ import {
   IonChip,
   IonProgressBar,
   IonText,
-  IonCheckbox,
+  IonCheckbox, AlertController,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -26,7 +26,7 @@ import {
   timeOutline,
   listOutline,
   ellipsisHorizontalOutline,
-  eyeOutline, eyeOffOutline
+  eyeOutline, eyeOffOutline, trashOutline
 } from 'ionicons/icons';
 import { CustomHeaderComponent } from '../../component/custom-header/custom-header.component';
 import { Task } from '../../model/Task';
@@ -44,6 +44,10 @@ import {TaskList} from "../../model/TaskList";
 export class HomePage {
   // Decorators
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
+
+  // Services
+  private alertController: AlertController = inject(AlertController);
+
   // Variables
   today: Date = new Date();
   formattedDate: string;
@@ -125,7 +129,7 @@ export class HomePage {
       statsChartOutline,
       timeOutline,
       listOutline,
-      ellipsisHorizontalOutline, eyeOutline, eyeOffOutline
+      ellipsisHorizontalOutline, eyeOutline, eyeOffOutline, trashOutline
     });
 
     const options: Intl.DateTimeFormatOptions = {
@@ -149,6 +153,27 @@ export class HomePage {
 
   openTaskModal(task?: Task): void {
     this.taskModal.openTaskModal(task);
+  }
+
+  async deleteTask(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Confirm deletion',
+      message: 'Are you sure you want to eliminate this task?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   getActiveTasks(taskList: TaskList): Task[] {

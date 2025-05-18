@@ -1,5 +1,6 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import {
+  AlertController,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -14,7 +15,7 @@ import {CommonModule} from "@angular/common";
 import {Task} from "../../model/Task";
 import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
 import {addIcons} from "ionicons";
-import {ellipsisHorizontalOutline,   eyeOutline, eyeOffOutline } from "ionicons/icons";
+import {ellipsisHorizontalOutline,   eyeOutline, eyeOffOutline, trashOutline } from "ionicons/icons";
 import {TaskList} from "../../model/TaskList";
 
 @Component({
@@ -27,6 +28,10 @@ import {TaskList} from "../../model/TaskList";
 export class CalendarPage{
   // Decorators
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
+
+  // Services
+  private alertController: AlertController = inject(AlertController);
+
   // Variables
   selectedDate: Date = new Date();
   tasksSelectedDate: boolean = false;
@@ -71,7 +76,7 @@ export class CalendarPage{
   ];
 
   constructor() {
-    addIcons({ellipsisHorizontalOutline, eyeOutline, eyeOffOutline })
+    addIcons({ellipsisHorizontalOutline, eyeOutline, eyeOffOutline, trashOutline })
   }
 
   onDateSelected(date: Date): void {
@@ -105,6 +110,27 @@ export class CalendarPage{
 
   openTaskModal(task?: Task): void {
     this.taskModal.openTaskModal(task);
+  }
+
+  async deleteTask(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Confirm deletion',
+      message: 'Are you sure you want to eliminate this task?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   getActiveTasks(tasks: Task[]): Task[] {

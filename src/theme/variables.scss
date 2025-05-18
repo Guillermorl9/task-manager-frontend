@@ -79,3 +79,48 @@ ion-icon {
   color: var(--primary-color);
   font-size: 18px;
 }
+
+ion-alert {
+  --backdrop-opacity: 0.5;
+  --background: #ffffff;
+  --border-radius: 16px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  .alert-wrapper {
+    padding: 24px;
+  }
+
+  .alert-head {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+  }
+
+  .alert-message {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 24px;
+  }
+
+  .alert-button {
+    --border-radius: 10px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    --padding-start: 20px;
+    --padding-end: 20px;
+    font-weight: 500;
+    height: 44px;
+
+    &.alert-button-secondary {
+      --background: #f0f0f0;
+      --color: #333;
+    }
+
+    &.alert-button-primary {
+      --background: var(--primary-color);
+      --color: #ffffff;
+    }
+  }
+}
+
