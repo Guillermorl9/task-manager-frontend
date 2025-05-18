@@ -17,9 +17,10 @@ import {
   IonTitle,
   IonInput,
   IonDatetime, IonCheckbox, IonSelect, IonSelectOption, IonTextarea, IonListHeader
-} from '@ionic/angular/standalone';import {RouterModule} from "@angular/router";
+} from '@ionic/angular/standalone';
+import {RouterModule} from "@angular/router";
 import {addIcons} from "ionicons";
-import {addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline} from "ionicons/icons";
+import {addOutline, settingsOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline} from "ionicons/icons";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {ReactiveFormsModule} from "@angular/forms";
@@ -40,7 +41,7 @@ export class AppComponent {
   // Services
   private taskManagerService: TaskManagerService = inject(TaskManagerService);
   constructor() {
-    addIcons({ addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline });
+    addIcons({ addOutline, todayOutline, calendarOutline, checkmarkDoneOutline, closeOutline, timeOutline, readerOutline, reorderThreeOutline, settingsOutline });
   }
 
   openTaskModal(): void {

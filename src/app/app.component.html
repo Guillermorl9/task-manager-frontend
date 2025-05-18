@@ -19,9 +19,14 @@
           <ion-label>Calendar</ion-label>
         </ion-item>
 
-        <ion-item routerLink="/tasks-lists">
+        <ion-item routerLink="/tasks-lists" lines="none">
           <ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
           <ion-label>Task Lists</ion-label>
+        </ion-item>
+
+        <ion-item routerLink="/settings">
+          <ion-icon slot="start" name="settings-outline"></ion-icon>
+          <ion-label>Settings</ion-label>
         </ion-item>
 
         <ion-item button (click)="openTaskListModal()" id="open-create-list-modal" class="menu-button" lines="none">
