@@ -12,17 +12,19 @@ import {
   LoadingController
 } from '@ionic/angular/standalone';
 import {RouterLink} from "@angular/router";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, IonItem, IonInput, IonLabel, IonButton, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, ReactiveFormsModule, IonItem, IonInput, IonLabel, IonButton, RouterLink]
 })
 export class LoginPage {
   // Services
   private loadingCtrl: LoadingController = inject(LoadingController);
+  private authService: AuthService = inject(AuthService);
 
   // Variables
   formulario: FormGroup;
@@ -47,7 +49,16 @@ export class LoginPage {
     try {
       const email: string = this.formulario.get('email')?.value;
       const password: string = this.formulario.get('password')?.value;
-      await loading.dismiss();
+      this.authService.login({email, password}).subscribe({
+        next: async (response) => {
+          await loading.dismiss();
+          console.log(response.token);
+        },
+        error: async (error) => {
+          await loading.dismiss();
+          console.error("Login failed", error);
+        }
+      });
       console.log(email, password);
     } catch (error) {
       console.error("Error initializing LoginPage", error);

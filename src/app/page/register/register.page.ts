@@ -12,17 +12,19 @@ import {
   LoadingController
 } from '@ionic/angular/standalone';
 import {RouterLink} from "@angular/router";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule, IonItem, IonLabel, IonInput, IonButton, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, ReactiveFormsModule, IonItem, IonLabel, IonInput, IonButton, RouterLink]
 })
 export class RegisterPage {
   // Services
   private loadingCtrl: LoadingController = inject(LoadingController)
+  private authService: AuthService = inject(AuthService);
 
   // Variables
   formulario: FormGroup;
@@ -52,11 +54,20 @@ export class RegisterPage {
       const lastName: string = this.formulario.get('lastName')?.value;
       const email: string = this.formulario.get('email')?.value;
       const password: string = this.formulario.get('password')?.value;
+      this.authService.register({email, password}).subscribe({
+        next: async (response) => {
+          await loading.dismiss();
+          console.log(response.message);
+        },
+        error: async (error) => {
+          await loading.dismiss();
+          console.error('Error during registration:', error);
+        }
+      });
       await loading.dismiss();
       console.log(firstName, lastName, email, password);
     } catch (error) {
       console.error("Error initializing RegisterPage", error);
-      await loading.dismiss();
     }
   }
 
