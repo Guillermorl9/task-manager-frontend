@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,7 @@ import {Observable, tap} from "rxjs";
 export class AuthService {
   // Services
   private http: HttpClient = inject(HttpClient);
+  private router: Router = inject(Router);
 
   // Constants
   private readonly API_URL: string = 'http://localhost:8080/api/auth';
@@ -19,6 +21,7 @@ export class AuthService {
     return this.http.post<{token: string}>(`${this.API_URL}/login`, credentials).pipe(
       tap(response => {
         localStorage.setItem(this.tokenKey, response.token);
+        this.router.navigate(['/home']);
       })
     )
   }
