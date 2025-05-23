@@ -50,14 +50,13 @@ export class RegisterPage {
       return;
     }
     try {
-      const firstName: string = this.formulario.get('firstName')?.value;
-      const lastName: string = this.formulario.get('lastName')?.value;
+      const name: string = this.formulario.get('firstName')?.value;
+      const lastname: string = this.formulario.get('lastName')?.value;
       const email: string = this.formulario.get('email')?.value;
       const password: string = this.formulario.get('password')?.value;
-      this.authService.register({email, password}).subscribe({
+      this.authService.register({email, password, name, lastname}).subscribe({
         next: async (response) => {
           await loading.dismiss();
-          console.log(response.message);
         },
         error: async (error) => {
           await loading.dismiss();
@@ -65,7 +64,6 @@ export class RegisterPage {
         }
       });
       await loading.dismiss();
-      console.log(firstName, lastName, email, password);
     } catch (error) {
       console.error("Error initializing RegisterPage", error);
     }

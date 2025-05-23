@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -44,12 +44,16 @@ import {AuthService} from "../../service/auth.service";
     IonNote
   ]
 })
-export class SettingsPage {
+export class SettingsPage implements OnInit{
   // Services
   private authService: AuthService = inject(AuthService);
 
+  // Variables
+  userApp: UserApp | null = null;
+
   userProfile: UserApp = {
-    name: 'Alex Johnson',
+    name: 'Alex',
+    lastName: 'Johnson',
     email: 'alex.johnson@example.com',
     photoUrl: 'https://i.pravatar.cc/300'
   };
@@ -65,6 +69,12 @@ export class SettingsPage {
 
   constructor() {
     addIcons({personOutline, optionsOutline, colorPaletteOutline, cloudOutline, cameraOutline, logOutOutline});
+  }
+
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe(user => {
+      this.userApp = user;
+    });
   }
 
   logout(): void {
