@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
@@ -23,6 +23,7 @@ import {
 } from 'ionicons/icons';
 import {UserApp} from "../../model/UserApp";
 import {UserSettings} from "../../model/UserSettings";
+import {AuthService} from "../../service/auth.service";
 
 @Component({
   selector: 'app-settings',
@@ -44,6 +45,8 @@ import {UserSettings} from "../../model/UserSettings";
   ]
 })
 export class SettingsPage {
+  // Services
+  private authService: AuthService = inject(AuthService);
 
   userProfile: UserApp = {
     name: 'Alex Johnson',
@@ -62,6 +65,10 @@ export class SettingsPage {
 
   constructor() {
     addIcons({personOutline, optionsOutline, colorPaletteOutline, cloudOutline, cameraOutline, logOutOutline});
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 
 }
