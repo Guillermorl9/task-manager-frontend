@@ -45,7 +45,6 @@ import {TaskManagerService} from "../../service/task-manager.service";
     IonCard,
     IonIcon,
     IonButton,
-    IonBadge,
     IonSearchbar,
     IonRippleEffect,
     CustomHeaderComponent,
@@ -87,7 +86,7 @@ export class TasksListsPage implements OnInit {
   }
 
   ngOnInit(): void {
-    this.taskManagerService.categories$.subscribe((categories) => {
+    this.taskManagerService.userCategories$.subscribe((categories) => {
       this.allCategories = categories;
     });
   }

@@ -64,9 +64,7 @@ export class CreateTaskModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.taskManagerService.taskLists$.subscribe((taskLists: TaskList[]) => {
-      this.allTaskLists = taskLists;
-    })
+
   }
 
   openTaskModal(task?: Task) {

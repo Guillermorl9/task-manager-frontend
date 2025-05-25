@@ -51,7 +51,7 @@ export class CreateTasklistModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.taskManagerService.categories$.subscribe((categories: Category[]) => {
+    this.taskManagerService.userCategories$.subscribe((categories: Category[]) => {
       this.allCategories = categories;
     });
   }

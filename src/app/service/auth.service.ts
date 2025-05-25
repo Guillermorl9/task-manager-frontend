@@ -57,6 +57,15 @@ export class AuthService {
     this.currentUser.next(null);
     this.router.navigate(['/login']);
   }
+
+  get userId(): number | undefined | null {
+    const user: UserApp | null = this.currentUser.getValue();
+    return user ? user.id : null;
+  }
+
+  get token(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
 }
 
 interface AuthResponse {

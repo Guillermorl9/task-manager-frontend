@@ -1,98 +1,27 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {Category} from "../../../model/Category";
-import {TaskList} from "../../../model/TaskList";
+import {HttpClient} from "@angular/common/http";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CategoryApiService {
-  private baseUrl: string = 'http://localhost:8080/api';
+  private http: HttpClient = inject(HttpClient);
+  private readonly BASE_URL: string = 'http://localhost:8080/api/categories';
 
-  //Static data
-  personalLists: TaskList[] = [
-    {
-      title: 'Household Chores',
-      tasks: [
-        { title: 'Clean kitchen', date: '2025-05-02', completed: false },
-        { title: 'Take out trash', date: '2025-05-02', completed: true },
-        { title: 'Water plants', date: '2025-05-03', completed: false }
-      ]
-    },
-    {
-      title: 'Exercise Routine',
-      tasks: [
-        { title: 'Morning run', date: '2025-05-02', completed: true },
-        { title: 'Gym workout', date: '2025-05-04', completed: false }
-      ]
-    },
-    {
-      title: 'Shopping List',
-      tasks: [
-        { title: 'Buy groceries', date: '2025-05-03', completed: false },
-        { title: 'Get new shoes', date: '2025-05-05', completed: false }
-      ]
-    }
-  ];
-
-  workLists: TaskList[] = [
-    {
-      title: 'Project Tasks',
-      tasks: [
-        { title: 'Complete UI design', date: '2025-05-02', completed: true },
-        { title: 'Write documentation', date: '2025-05-03', completed: false },
-        { title: 'Client presentation', date: '2025-05-04', completed: false },
-        { title: 'Code review', date: '2025-05-04', completed: false }
-      ]
-    },
-    {
-      title: 'Admin Tasks',
-      tasks: [
-        { title: 'Send weekly report', date: '2025-05-03', completed: false },
-        { title: 'Update timesheet', date: '2025-05-02', completed: true }
-      ]
-    }
-  ];
-
-  studyLists: TaskList[] = [
-    {
-      title: 'Angular Course',
-      tasks: [
-        { title: 'Complete module 5', date: '2025-05-03', completed: false },
-        { title: 'Practice exercises', date: '2025-05-04', completed: false }
-      ]
-    }
-  ];
-  constructor() { }
-  getCategoriesByUser(userId: number): Category[] {
-    return [
-      {
-        title: 'Personal',
-        icon: 'home-outline',
-        lists: this.personalLists
-      },
-      {
-        title: 'Work',
-        icon: 'briefcase-outline',
-        lists: this.workLists
-      },
-      {
-        title: 'Study',
-        icon: 'school-outline',
-        lists: this.studyLists
-      }
-    ];
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.BASE_URL}`);
   }
 
-  createCategory(userId: number, category: Category): void {
-
+  createCategory(category: Category): Observable<Category> {
+    return this.http.post<Category>(`${this.BASE_URL}`, category);
   }
 
-  deleteCategory(userId: number, categoryId: number): void {
-
+  updateCategory(categoryId: number, category: Category): Observable<Category> {
+    return this.http.put<Category>(`${this.BASE_URL}/${categoryId}`, category);
   }
 
-  updateCategory(userId: number, categoryId: number, category: Category): void {
-
+  deleteCategory(categoryId: number): Observable<void> {
+    return this.http.delete<void>(`${this.BASE_URL}/${categoryId}`);
   }
 }
+

@@ -48,7 +48,6 @@ export class AppComponent {
     this.taskModal.openTaskModal().then((result) => {
       if (result && result.role === 'confirm' && result.data) {
         const { task, list } = result.data;
-        this.taskManagerService.addTask(task, list);
         console.log('Tarea creada:', task);
       }
     });
@@ -57,7 +56,6 @@ export class AppComponent {
   openTaskListModal(): void {
     this.taskListModal.openTaskListModal().then((result) => {
       if (result && result.role === 'confirm' && result.data) {
-        this.taskManagerService.addTaskList(result.data.taskList, result.data.category);
         console.log('Lista creada: ', result.data);
       }
     })

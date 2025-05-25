@@ -1,27 +1,26 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Task} from "../../../model/Task";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class TaskApiService {
-  private baseUrl: string = 'http://localhost:8080/api';
-  constructor() { }
+  private http: HttpClient = inject(HttpClient);
+  private readonly BASE_URL: string = 'http://localhost:8080/api/lists';
 
-  getTasksByTaskList(userId: number, categoryId: number, taskListId: number): void {
-
+  getTasksByList(listId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.BASE_URL}/${listId}/tasks`);
   }
 
-  createTask(userId: number, categoryId: number, taskListId: number, task: Task): void {
-
+  createTask(listId: number, task: Task): Observable<Task> {
+    return this.http.post<Task>(`${this.BASE_URL}/${listId}/tasks`, task);
   }
 
-  deleteTask(userId: number, categoryId: number, taskListId: number, taskId: number): void {
-
+  updateTask(taskId: number, task: Task): Observable<Task> {
+    return this.http.put<Task>(`${this.BASE_URL}/tasks/${taskId}`, task);
   }
 
-  updateTask(userId: number, categoryId: number, taskListId: number, taskId: number, task: Task): void {
-
+  deleteTask(taskId: number): Observable<void> {
+    return this.http.delete<void>(`${this.BASE_URL}/tasks/${taskId}`);
   }
-
 }
