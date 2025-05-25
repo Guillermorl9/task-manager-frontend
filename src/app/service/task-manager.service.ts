@@ -125,6 +125,14 @@ export class TaskManagerService {
     });
   }
 
+  get todayTasks$(): Observable<Task[]> {
+    return this.taskApiService.getTodayTasks();
+  }
+
+  get upcomingTasks$(): Observable<Task[]> {
+    return this.taskApiService.getUpcomingTasks();
+  }
+
   addTask(taskListId: number, task: Task): void {
     this.taskApiService.createTask(taskListId, task).subscribe({
       next: createdTask => {

@@ -12,6 +12,14 @@ export class TaskApiService {
     return this.http.get<Task[]>(`${this.BASE_URL}/${listId}/tasks`);
   }
 
+  getTodayTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>('http://localhost:8080/api/tasks/today');
+  }
+
+  getUpcomingTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>('http://localhost:8080/api/tasks/upcoming');
+  }
+
   createTask(listId: number, task: Task): Observable<Task> {
     return this.http.post<Task>(`${this.BASE_URL}/${listId}/tasks`, task);
   }

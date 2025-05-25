@@ -1,4 +1,4 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonContent,
@@ -32,6 +32,7 @@ import { CustomHeaderComponent } from '../../component/custom-header/custom-head
 import { Task } from '../../model/Task';
 import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
 import {TaskList} from "../../model/TaskList";
+import {TaskManagerService} from "../../service/task-manager.service";
 
 @Component({
   selector: 'app-home',
@@ -41,12 +42,13 @@ import {TaskList} from "../../model/TaskList";
   imports: [CommonModule, RouterLink, IonContent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel, IonIcon, IonButton, IonChip, IonProgressBar, IonText, IonCheckbox, CustomHeaderComponent, CreateTaskModalComponent
   ]
 })
-export class HomePage {
+export class HomePage implements OnInit{
   // Decorators
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
 
   // Services
   private alertController: AlertController = inject(AlertController);
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
 
   // Variables
   today: Date = new Date();
@@ -56,68 +58,16 @@ export class HomePage {
   completionRate: number = this.completedTasks / this.totalTasks;
   showTodayCompleted: boolean = true;
   showUpcomingCompleted: boolean = true;
-
-
-  todaysTasks: Task[] = [
-    {
-      title: 'Meeting with the team',
-      date: '2025-05-02',
-      time: '10:00',
-      description: 'Weekly update meeting with the development team',
-      completed: true
-    },
-    {
-      title: 'Send project proposal',
-      date: '2025-05-02',
-      time: '13:30',
-      description: 'Send the final proposal to the client',
-      completed: false
-    },
-    {
-      title: 'Exercise routine',
-      date: '2025-05-02',
-      completed: true
-    },
-    {
-      title: 'Grocery shopping',
-      date: '2025-05-02',
-      description: 'Buy groceries for the week',
-      completed: true
-    },
-    {
-      title: 'Prepare presentation',
-      date: '2025-05-02',
-      time: '16:00',
-      description: 'Prepare slides for tomorrow\'s presentation',
-      completed: false
-    }
-  ];
-
-  upcomingTasks: Task[] = [
-    {
-      title: 'Client meeting',
-      date: '2025-05-03',
-      time: '11:00',
-      description: 'Meeting with new client to discuss project requirements',
-      completed: false
-    },
-    {
-      title: 'Dentist appointment',
-      date: '2025-05-04',
-      time: '14:30',
-      description: 'Regular checkup',
-      completed: false
-    }
-  ];
+  todayTasks: Task[] = [];
 
   todayTaskList: TaskList = {
-    title: 'Today',
-    tasks: this.todaysTasks
+    title: 'Today \'s Tasks',
+    tasks: [],
   }
 
   upcomingTaskList: TaskList = {
-    title: 'Upcoming',
-    tasks: this.upcomingTasks
+    title: 'Upcoming Tasks',
+    tasks: [],
   }
 
   constructor() {
@@ -140,10 +90,24 @@ export class HomePage {
     this.formattedDate = this.today.toLocaleDateString('en-US', options);
   }
 
+  ngOnInit(): void {
+    this.taskManagerService.todayTasks$.subscribe(tasks => {
+      this.todayTasks = tasks;
+      this.totalTasks = tasks.length;
+      this.completedTasks = tasks.filter(task => task.completed).length;
+      this.completionRate = this.totalTasks ? this.completedTasks / this.totalTasks : 0;
+      this.todayTaskList.tasks = tasks;
+    })
+
+    this.taskManagerService.upcomingTasks$.subscribe(tasks => {
+      this.upcomingTaskList.tasks = tasks;
+    })
+  }
+
   toggleTaskStatus(task: Task): void {
     task.completed = !task.completed;
 
-    this.completedTasks = this.todaysTasks.filter(t => t.completed).length;
+    this.completedTasks = this.todayTasks.filter(t => t.completed).length;
     this.completionRate = this.completedTasks / this.totalTasks;
   }
 
@@ -183,6 +147,5 @@ export class HomePage {
   getCompletedTasks(taskList: TaskList): Task[] {
     return taskList.tasks.filter(task => task.completed);
   }
-
 
 }
