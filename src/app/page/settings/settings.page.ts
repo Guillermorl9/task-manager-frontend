@@ -24,6 +24,7 @@ import {
 import {UserApp} from "../../model/UserApp";
 import {UserSettings} from "../../model/UserSettings";
 import {AuthService} from "../../service/auth.service";
+import {TaskManagerService} from "../../service/task-manager.service";
 
 @Component({
   selector: 'app-settings',
@@ -47,6 +48,7 @@ import {AuthService} from "../../service/auth.service";
 export class SettingsPage implements OnInit{
   // Services
   private authService: AuthService = inject(AuthService);
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
 
   // Variables
   userApp: UserApp | null = null;
@@ -78,6 +80,7 @@ export class SettingsPage implements OnInit{
   }
 
   logout(): void {
+    this.taskManagerService.clearUserData();
     this.authService.logout();
   }
 

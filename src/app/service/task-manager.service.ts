@@ -6,6 +6,7 @@ import {TaskListApiService} from "./api-service/task-list-api-service/task-list-
 import {TaskApiService} from "./api-service/task-api-service/task-api.service";
 import {TaskList} from "../model/TaskList";
 import {Task} from "../model/Task";
+import {AuthService} from "./auth.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class TaskManagerService {
   private categoryApiService: CategoryApiService = inject(CategoryApiService);
   private taskListApiService: TaskListApiService = inject(TaskListApiService);
   private taskApiService: TaskApiService = inject(TaskApiService);
+  private authService: AuthService = inject(AuthService);
 
   // Subjects and Observables
   private userCategories: BehaviorSubject<Category[]> = new BehaviorSubject<Category[]>([]);
@@ -27,6 +29,16 @@ export class TaskManagerService {
   public userTasks$: Observable<Task[]> = this.userTasks.asObservable();
 
   constructor() {
+    this.authService.currentUser$.subscribe((user => {
+      if (user) {
+        this.loadUserData();
+      } else {
+        this.clearUserData();
+      }
+    }))
+  }
+
+  private loadUserData(): void {
     this.categoryApiService.getCategories().subscribe({
       next: categories => this.userCategories.next(categories),
       error: err => console.error('Error al cargar categorías:', err)
@@ -36,6 +48,12 @@ export class TaskManagerService {
       next: tasksLists => this.userTasksLists.next(tasksLists),
       error: err => console.error('Error al cargar taskLists:', err)
     })
+  }
+
+  clearUserData(): void {
+    this.userCategories.next([]);
+    this.userTasksLists.next([]);
+    this.userTasks.next([]);
   }
 
   // Categories

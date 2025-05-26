@@ -13,11 +13,11 @@ export class TaskApiService {
   }
 
   getTodayTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>('http://localhost:8080/api/tasks/today');
+    return this.http.get<Task[]>('http://localhost:8080/api/lists/tasks/today');
   }
 
   getUpcomingTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>('http://localhost:8080/api/tasks/upcoming');
+    return this.http.get<Task[]>('http://localhost:8080/api/lists/tasks/upcoming');
   }
 
   createTask(listId: number, task: Task): Observable<Task> {
