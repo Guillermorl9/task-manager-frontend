@@ -31,6 +31,11 @@ export class TaskManagerService {
       next: categories => this.userCategories.next(categories),
       error: err => console.error('Error al cargar categorías:', err)
     });
+
+    this.taskListApiService.getAllTaskLists().subscribe({
+      next: tasksLists => this.userTasksLists.next(tasksLists),
+      error: err => console.error('Error al cargar taskLists:', err)
+    })
   }
 
   // Categories
@@ -88,6 +93,16 @@ export class TaskManagerService {
     this.taskListApiService.createTaskList(categoryId, taskList).subscribe({
       next: createdList => {
         this.userTasksLists.next([...this.userTasksLists.value, createdList]);
+        const updatedCategories = this.userCategories.value.map(cat => {
+          if (cat.id === categoryId) {
+            return {
+              ...cat,
+              lists: [...(cat.lists || []), createdList] // Usar createdList, no taskList
+            };
+          }
+          return cat;
+        });
+        this.userCategories.next(updatedCategories);
       },
       error: err => console.error('Error al crear lista:', err)
     });
@@ -108,12 +123,23 @@ export class TaskManagerService {
   deleteTaskList(taskListId: number): void {
     this.taskListApiService.deleteTaskList(taskListId).subscribe({
       next: () => {
-        const filtered: TaskList[] = this.userTasksLists.value.filter(list => list.id !== taskListId);
-        this.userTasksLists.next(filtered);
+        const filteredTaskLists = this.userTasksLists.value.filter(list => list.id !== taskListId);
+        this.userTasksLists.next(filteredTaskLists);
+        const updatedCategories = this.userCategories.value.map(cat => ({
+          ...cat,
+          lists: cat.lists?.filter(list => list.id !== taskListId) || []
+        }));
+        this.userCategories.next(updatedCategories);
         this.userTasks.next([]);
       },
       error: err => console.error('Error al eliminar lista:', err)
     });
+  }
+
+  findCategoryByTaskListId(taskListId: number): Category | undefined {
+    return this.userCategories.value.find(category =>
+      category.lists.some(list => list.id === taskListId)
+    );
   }
 
   // Tasks
@@ -137,6 +163,29 @@ export class TaskManagerService {
     this.taskApiService.createTask(taskListId, task).subscribe({
       next: createdTask => {
         this.userTasks.next([...this.userTasks.value, createdTask]);
+        const updatedTaskLists = this.userTasksLists.value.map(list => {
+          if (list.id === taskListId) {
+            return {
+              ...list,
+              tasks: [...(list.tasks || []), createdTask]
+            };
+          }
+          return list;
+        });
+        this.userTasksLists.next(updatedTaskLists);
+        const updatedCategories = this.userCategories.value.map(cat => ({
+          ...cat,
+          lists: cat.lists?.map(list => {
+            if (list.id === taskListId) {
+              return {
+                ...list,
+                tasks: [...(list.tasks || []), createdTask]
+              };
+            }
+            return list;
+          }) || []
+        }));
+        this.userCategories.next(updatedCategories);
       },
       error: err => console.error('Error al crear tarea:', err)
     });
@@ -157,8 +206,21 @@ export class TaskManagerService {
   deleteTask(taskId: number): void {
     this.taskApiService.deleteTask(taskId).subscribe({
       next: () => {
-        const filtered: Task[] = this.userTasks.value.filter(t => t.id !== taskId);
-        this.userTasks.next(filtered);
+        const filteredTasks = this.userTasks.value.filter(t => t.id !== taskId);
+        this.userTasks.next(filteredTasks);
+        const updatedTaskLists = this.userTasksLists.value.map(list => ({
+          ...list,
+          tasks: list.tasks?.filter(task => task.id !== taskId) || []
+        }));
+        this.userTasksLists.next(updatedTaskLists);
+        const updatedCategories = this.userCategories.value.map(cat => ({
+          ...cat,
+          lists: cat.lists?.map(list => ({
+            ...list,
+            tasks: list.tasks?.filter(task => task.id !== taskId) || []
+          })) || []
+        }));
+        this.userCategories.next(updatedCategories);
       },
       error: err => console.error('Error al eliminar tarea:', err)
     });

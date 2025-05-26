@@ -12,6 +12,10 @@ export class TaskListApiService {
     return this.http.get<TaskList[]>(`${this.BASE_URL}/${categoryId}/lists`);
   }
 
+  getAllTaskLists(): Observable<TaskList[]> {
+    return this.http.get<TaskList[]>(`${this.BASE_URL}/lists`);
+  }
+
   createTaskList(categoryId: number, taskList: TaskList): Observable<TaskList> {
     return this.http.post<TaskList>(`${this.BASE_URL}/${categoryId}/lists`, taskList);
   }

@@ -80,12 +80,17 @@ export class CreateTasklistModalComponent implements OnInit {
       this.createTaskListForm.markAllAsTouched();
       return;
     }
-    const selectedCategory = this.allCategories.find(cat => cat.title === this.createTaskListForm.value.category);
-
+    const selectedCategory: Category | undefined = this.allCategories.find(cat => cat.title === this.createTaskListForm.value.category);
+    const categoryId: number | undefined = selectedCategory ? selectedCategory.id : 0;
     const taskList: TaskList = {
       title: this.createTaskListForm.value.title,
       tasks: []
     }
+
+    if(categoryId) {
+      this.taskManagerService.addTaskList(categoryId, taskList);
+    }
+
     this.createTaskListForm.reset({
       title: '',
       category: 'category1'

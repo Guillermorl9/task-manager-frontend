@@ -5,9 +5,8 @@ import {
   IonCard,
   IonIcon,
   IonButton,
-  IonBadge,
   IonSearchbar,
-  IonRippleEffect
+  IonRippleEffect, AlertController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -24,7 +23,7 @@ import {
   schoolOutline,
   peopleOutline,
   timeOutline,
-  ellipsisHorizontalOutline
+  ellipsisHorizontalOutline,
 } from 'ionicons/icons';
 import { CustomHeaderComponent } from '../../component/custom-header/custom-header.component';
 import { TaskList } from '../../model/TaskList';
@@ -60,6 +59,7 @@ export class TasksListsPage implements OnInit {
 
   // Services
   private taskManagerService: TaskManagerService = inject(TaskManagerService);
+  private alertController: AlertController = inject(AlertController);
 
   // Variables
   searchQuery: string = '';
@@ -120,6 +120,29 @@ export class TasksListsPage implements OnInit {
     };
 
     this.taskManagerService.addCategory(newCategory);
+  }
+
+  async deleteCategory(categoryId: number | undefined): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Confirm deletion',
+      message: 'Are you sure you want to eliminate this category?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Delete',
+          handler: () => {
+            if (categoryId)
+            this.taskManagerService.deleteCategory(categoryId);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   openListDetails(taskList: TaskList): void {

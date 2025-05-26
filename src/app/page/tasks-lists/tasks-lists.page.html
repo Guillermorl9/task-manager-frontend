@@ -27,6 +27,7 @@
     <div class="category-header">
       <ion-icon [name]="section.icon" class="category-icon"></ion-icon>
       <h2 class="category-title">{{ section.title }}</h2>
+      <ion-icon name="trash-outline" color="danger" slot="end" class="options-icon" (click)="deleteCategory(section.id)"></ion-icon>
       <!-- <ion-badge color="primary" mode="ios">{{ section.lists.length }}</ion-badge> -->
     </div>
 

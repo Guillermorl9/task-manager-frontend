@@ -64,7 +64,9 @@ export class CreateTaskModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.taskManagerService.userTasksLists$.subscribe(tasksLists => {
+      this.allTaskLists = tasksLists;
+    })
   }
 
   openTaskModal(task?: Task) {
@@ -203,8 +205,8 @@ export class CreateTaskModalComponent implements OnInit {
       return;
     }
 
-    const selectedList = this.allTaskLists.find(list => list.title === this.createTaskForm.value.list);
-
+    const selectedList: TaskList | undefined = this.allTaskLists.find(list => list.title === this.createTaskForm.value.list);
+    const selectedListId: number | undefined = selectedList ? selectedList.id : 0;
     const task: Task = {
       title: this.createTaskForm.value.title,
       description: this.createTaskForm.value.description,
@@ -213,11 +215,9 @@ export class CreateTaskModalComponent implements OnInit {
       completed: false,
     }
 
-    this.formattedDate = '';
-    this.formattedTime = '';
-    this.selectedDate = '';
-    this.selectedTime = '';
-    this.allDay = false;
+    if (selectedListId) {
+      this.taskManagerService.addTask(selectedListId, task);
+    }
 
     this.createTaskForm.reset({
       title: '',

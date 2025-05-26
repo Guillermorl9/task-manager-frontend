@@ -1,4 +1,4 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import { IonCard, AlertController, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonChip, IonIcon, IonItem, IonLabel, IonText, IonPopover } from "@ionic/angular/standalone";
 import {NgForOf, NgIf} from "@angular/common";
 import {TaskList} from "../../model/TaskList";
@@ -6,6 +6,8 @@ import {Task} from "../../model/Task";
 import {CreateTaskModalComponent} from "../create-task-modal/create-task-modal.component";
 import { addIcons } from 'ionicons';
 import { timeOutline, ellipsisHorizontalOutline, eyeOutline, eyeOffOutline, trashOutline } from 'ionicons/icons';
+import {TaskManagerService} from "../../service/task-manager.service";
+import {Category} from "../../model/Category";
 
 @Component({
   selector: 'app-task-list-details',
@@ -29,18 +31,20 @@ import { timeOutline, ellipsisHorizontalOutline, eyeOutline, eyeOffOutline, tras
     CreateTaskModalComponent
   ]
 })
-export class TaskListDetailsComponent {
+export class TaskListDetailsComponent implements OnInit {
   // Decorators
   @ViewChild('taskDetailsPopover') popover!: IonPopover;
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
 
   // Services
   private alertController: AlertController = inject(AlertController);
+  private taskmanagerService: TaskManagerService = inject(TaskManagerService);
 
   // Variables
   currentTaskList: TaskList = {title: '', tasks: []};
   isPopoverOpen: boolean = false;
   showCompleted: boolean = true;
+  categories: Category[] = [];
 
   constructor() {
     addIcons({
@@ -49,6 +53,12 @@ export class TaskListDetailsComponent {
       eyeOutline,
       eyeOffOutline, trashOutline
     });
+  }
+
+  ngOnInit() {
+    this.taskmanagerService.userCategories$.subscribe((categories) => {
+      this.categories = categories;
+    })
   }
 
   toggleTaskStatus(task: Task): void {
@@ -68,7 +78,7 @@ export class TaskListDetailsComponent {
     this.taskModal.openTaskModal(task);
   }
 
-  async deleteTask(): Promise<void> {
+  async deleteTask(list: TaskList, taskId: number | undefined): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Confirm deletion',
       message: 'Are you sure you want to eliminate this task?',
@@ -81,6 +91,12 @@ export class TaskListDetailsComponent {
         {
           text: 'Delete',
           handler: () => {
+            if (taskId) {
+              const index: number = list.tasks.findIndex(task => task.id === taskId);
+              this.taskmanagerService.deleteTask(taskId);
+              if (index > -1)
+                list.tasks.splice(index, 1);
+            }
           }
         }
       ]
@@ -89,7 +105,7 @@ export class TaskListDetailsComponent {
     await alert.present();
   }
 
-  async deleteTaskList(): Promise<void> {
+  async deleteTaskList(taskListId: number | undefined): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Confirm deletion',
       message: 'Are you sure you want to eliminate this to-do list?',
@@ -102,7 +118,10 @@ export class TaskListDetailsComponent {
         {
           text: 'Delete',
           handler: () => {
-
+            if (taskListId) {
+              this.taskmanagerService.deleteTaskList(taskListId);
+              this.popover.dismiss();
+            }
           }
         }
       ]
