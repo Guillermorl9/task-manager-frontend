@@ -1,4 +1,4 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {
   AlertController,
   IonCard,
@@ -17,6 +17,7 @@ import {CreateTaskModalComponent} from "../../component/create-task-modal/create
 import {addIcons} from "ionicons";
 import {ellipsisHorizontalOutline,   eyeOutline, eyeOffOutline, trashOutline } from "ionicons/icons";
 import {TaskList} from "../../model/TaskList";
+import {TaskManagerService} from "../../service/task-manager.service";
 
 @Component({
   selector: 'app-calendar',
@@ -25,12 +26,13 @@ import {TaskList} from "../../model/TaskList";
   standalone: true,
   imports: [IonContent, CommonModule, CustomHeaderComponent, TaskScheduleComponent, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonChip, IonIcon, IonItem, IonLabel, IonText, CreateTaskModalComponent]
 })
-export class CalendarPage{
+export class CalendarPage implements OnInit{
   // Decorators
   @ViewChild(CreateTaskModalComponent) taskModal!: CreateTaskModalComponent;
 
   // Services
   private alertController: AlertController = inject(AlertController);
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
 
   // Variables
   selectedDate: Date = new Date();
@@ -39,44 +41,24 @@ export class CalendarPage{
   totalTasks: number = 7;
   completionRate: number = this.completedTasks / this.totalTasks;
   showCompleted: boolean = true;
-
-  allTasks: Task[] = [
-    {
-      title: 'Meeting with the team',
-      date: '2025-05-02',
-      time: '10:00',
-      description: 'Weekly update meeting with the development team',
-      completed: true
-    },
-    {
-      title: 'Send project proposal',
-      date: '2025-05-02',
-      time: '13:30',
-      description: 'Send the final proposal to the client',
-      completed: false
-    },
-    {
-      title: 'Exercise routine',
-      date: '2025-05-02',
-      completed: true
-    },
-    {
-      title: 'Grocery shopping',
-      date: '2025-05-04',
-      description: 'Buy groceries for the week',
-      completed: true
-    },
-    {
-      title: 'Prepare presentation',
-      date: '2025-05-03',
-      time: '16:00',
-      description: 'Prepare slides for tomorrow\'s presentation',
-      completed: false
-    }
-  ];
+  allTasks: Task[] = [];
 
   constructor() {
     addIcons({ellipsisHorizontalOutline, eyeOutline, eyeOffOutline, trashOutline })
+  }
+
+  ngOnInit() {
+    this.taskManagerService.userTasks$.subscribe((tasks: Task[]) => {
+      this.allTasks = tasks;
+      this.completedTasks = this.getCompletedTasks(this.allTasks).length;
+      this.totalTasks = this.allTasks.length;
+      this.completionRate = this.totalTasks ? this.completedTasks / this.totalTasks : 0;
+
+      if (this.tasksSelectedDate) {
+        this.selectedDate = new Date();
+      }
+      console.log(this.allTasks);
+    })
   }
 
   onDateSelected(date: Date): void {
@@ -112,7 +94,7 @@ export class CalendarPage{
     this.taskModal.openTaskModal(task);
   }
 
-  async deleteTask(): Promise<void> {
+  async deleteTask(taskId: number | undefined): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Confirm deletion',
       message: 'Are you sure you want to eliminate this task?',
@@ -125,6 +107,9 @@ export class CalendarPage{
         {
           text: 'Delete',
           handler: () => {
+            if (taskId) {
+              this.taskManagerService.deleteTask(taskId);
+            }
           }
         }
       ]

@@ -12,6 +12,10 @@ export class TaskApiService {
     return this.http.get<Task[]>(`${this.BASE_URL}/${listId}/tasks`);
   }
 
+  getAllUserTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.BASE_URL}/all-tasks`);
+  }
+
   getTodayTasks(): Observable<Task[]> {
     return this.http.get<Task[]>('http://localhost:8080/api/lists/tasks/today');
   }

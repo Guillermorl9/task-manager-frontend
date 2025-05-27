@@ -38,6 +38,7 @@ export class TaskManagerService {
     this.authService.currentUser$.subscribe((user => {
       if (user) {
         this.loadUserData();
+        this.loadAllUserTasks();
       } else {
         this.clearUserData();
       }
@@ -183,6 +184,13 @@ export class TaskManagerService {
     this.taskApiService.getTasksByList(taskListId).subscribe({
       next: tasks => this.userTasks.next(tasks),
       error: err => console.error('Error al cargar tareas:', err)
+    });
+  }
+
+  loadAllUserTasks(): void {
+    this.taskApiService.getAllUserTasks().subscribe({
+      next: tasks => this.userTasks.next(tasks),
+      error: err => console.error('Error al cargar todas las tareas del usuario:', err)
     });
   }
 
