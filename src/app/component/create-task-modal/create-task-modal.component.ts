@@ -205,7 +205,6 @@ export class CreateTaskModalComponent implements OnInit {
       return;
     }
 
-    // Recortar solo la parte de la fecha, sin hora
     let dateOnly = this.createTaskForm.value.date;
     if (dateOnly && dateOnly.includes('T')) {
       dateOnly = dateOnly.split('T')[0];
@@ -217,7 +216,7 @@ export class CreateTaskModalComponent implements OnInit {
     const task: Task = {
       title: this.createTaskForm.value.title,
       description: this.createTaskForm.value.description,
-      date: dateOnly,               // Aquí ya va sólo la fecha
+      date: dateOnly,
       time: this.createTaskForm.value.time,
       completed: false,
     };

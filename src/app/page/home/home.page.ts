@@ -112,6 +112,9 @@ export class HomePage implements OnInit{
     this.completedTasks = this.todayTasks.filter(t => t.completed).length;
     this.completionRate = this.totalTasks ? this.completedTasks / this.totalTasks : 0;
 
+    if (task.id) {
+      this.taskManagerService.updateTask(task.id, task);
+    }
   }
 
   getTimeFromTask(task: Task): string {

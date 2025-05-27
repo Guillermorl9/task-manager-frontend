@@ -78,11 +78,9 @@ export class CalendarPage implements OnInit{
 
   toggleTaskStatus(task: Task): void {
     task.completed = !task.completed;
-
-    const tasksToday: Task[] = this.getTasksForSelectedDate();
-    this.completedTasks = tasksToday.filter(t => t.completed).length;
-    this.totalTasks = tasksToday.length;
-    this.completionRate = this.totalTasks ? this.completedTasks / this.totalTasks : 0;
+    if (task.id) {
+      this.taskManagerService.updateTask(task.id, task);
+    }
   }
 
   getTimeFromTask(task: Task): string {

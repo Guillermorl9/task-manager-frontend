@@ -265,9 +265,34 @@ export class TaskManagerService {
         );
         this.userTasks.next(updated);
 
+        const updatedTaskLists = this.userTasksLists.value.map(list => ({
+          ...list,
+          tasks: list.tasks?.map(task => task.id === taskId ? updatedTask : task) || []
+        }));
+        this.userTasksLists.next(updatedTaskLists);
+
+        const updatedCategories = this.userCategories.value.map(cat => ({
+          ...cat,
+          lists: cat.lists?.map(list => ({
+            ...list,
+            tasks: list.tasks?.map(task => task.id === taskId ? updatedTask : task) || []
+          })) || []
+        }));
+        this.userCategories.next(updatedCategories);
+
+        if (this.isTaskForToday(updatedTask)) {
+          const updatedTodayTasks = this.todayTasks.value.map(task =>
+            task.id === taskId ? updatedTask : task
+          );
+          this.todayTasks.next(updatedTodayTasks);
+        } else {
+          const filteredTodayTasks = this.todayTasks.value.filter(task => task.id !== taskId);
+          this.todayTasks.next(filteredTodayTasks);
+        }
       },
       error: err => console.error('Error al actualizar tarea:', err)
     });
+
   }
 
   deleteTask(taskId: number): void {

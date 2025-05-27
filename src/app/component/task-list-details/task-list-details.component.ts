@@ -38,7 +38,7 @@ export class TaskListDetailsComponent implements OnInit {
 
   // Services
   private alertController: AlertController = inject(AlertController);
-  private taskmanagerService: TaskManagerService = inject(TaskManagerService);
+  private taskManagerService: TaskManagerService = inject(TaskManagerService);
 
   // Variables
   currentTaskList: TaskList = {title: '', tasks: []};
@@ -56,13 +56,16 @@ export class TaskListDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.taskmanagerService.userCategories$.subscribe((categories) => {
+    this.taskManagerService.userCategories$.subscribe((categories) => {
       this.categories = categories;
     })
   }
 
   toggleTaskStatus(task: Task): void {
     task.completed = !task.completed;
+    if (task.id) {
+      this.taskManagerService.updateTask(task.id, task);
+    }
   }
 
   getTimeFromTask(task: Task): string {
@@ -93,7 +96,7 @@ export class TaskListDetailsComponent implements OnInit {
           handler: () => {
             if (taskId) {
               const index: number = list.tasks.findIndex(task => task.id === taskId);
-              this.taskmanagerService.deleteTask(taskId);
+              this.taskManagerService.deleteTask(taskId);
               if (index > -1)
                 list.tasks.splice(index, 1);
             }
@@ -119,7 +122,7 @@ export class TaskListDetailsComponent implements OnInit {
           text: 'Delete',
           handler: () => {
             if (taskListId) {
-              this.taskmanagerService.deleteTaskList(taskListId);
+              this.taskManagerService.deleteTaskList(taskListId);
               this.popover.dismiss();
             }
           }
