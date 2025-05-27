@@ -101,6 +101,7 @@ export class HomePage implements OnInit{
     })
 
     this.taskManagerService.upcomingTasks$.subscribe(tasks => {
+      this.upcomingTasks = tasks;
       this.upcomingTaskList.tasks = tasks;
     })
   }
@@ -109,7 +110,8 @@ export class HomePage implements OnInit{
     task.completed = !task.completed;
 
     this.completedTasks = this.todayTasks.filter(t => t.completed).length;
-    this.completionRate = this.completedTasks / this.totalTasks;
+    this.completionRate = this.totalTasks ? this.completedTasks / this.totalTasks : 0;
+
   }
 
   getTimeFromTask(task: Task): string {

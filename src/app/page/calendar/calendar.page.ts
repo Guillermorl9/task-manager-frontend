@@ -57,7 +57,6 @@ export class CalendarPage implements OnInit{
       if (this.tasksSelectedDate) {
         this.selectedDate = new Date();
       }
-      console.log(this.allTasks);
     })
   }
 

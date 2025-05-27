@@ -40,10 +40,11 @@
           {{todayTaskList.title}}
         </ion-card-title>
         <div class="task-filter-controls">
-          <ion-chip [color]="showTodayCompleted ? 'primary' : 'medium'" (click)="showTodayCompleted = !showTodayCompleted">
-            <ion-icon *ngIf="!showTodayCompleted" name="eye-outline"></ion-icon>
-            <ion-icon *ngIf="showTodayCompleted" name="eye-off-outline"></ion-icon>
-            <ion-label>{{ showTodayCompleted ? 'Hide completed' : 'Show Completed' }}</ion-label>
+          <ion-chip *ngIf="getCompletedTasks(todayTaskList).length > 0"
+                    [color]="showTodayCompleted ? 'primary' : 'medium'" (click)="showTodayCompleted = !showTodayCompleted">
+            <ion-icon *ngIf="!showTodayCompleted && getCompletedTasks(todayTaskList).length > 0" name="eye-outline"></ion-icon>
+            <ion-icon *ngIf="showTodayCompleted && getCompletedTasks(todayTaskList).length > 0" name="eye-off-outline"></ion-icon>
+            <ion-label *ngIf="getCompletedTasks(todayTaskList).length > 0">{{ showTodayCompleted ? 'Hide completed' : 'Show Completed' }}</ion-label>
           </ion-chip>
         </div>
         <ion-chip color="primary" outline>
@@ -109,11 +110,14 @@
           <ion-icon name="calendar-outline"></ion-icon>
           {{upcomingTaskList.title}}
         </ion-card-title>
-        <ion-chip [color]="showUpcomingCompleted ? 'primary' : 'medium'" (click)="showUpcomingCompleted = !showUpcomingCompleted">
-          <ion-icon *ngIf="!showUpcomingCompleted" name="eye-outline"></ion-icon>
-          <ion-icon *ngIf="showUpcomingCompleted" name="eye-off-outline"></ion-icon>
-          <ion-label>{{ showUpcomingCompleted ? 'Hide completed' : 'Show Completed' }}</ion-label>
-        </ion-chip>
+        <div class="task-filter-controls">
+          <ion-chip *ngIf="getCompletedTasks(upcomingTaskList).length > 0"
+                    [color]="showUpcomingCompleted ? 'primary' : 'medium'" (click)="showUpcomingCompleted = !showUpcomingCompleted">
+            <ion-icon *ngIf="!showUpcomingCompleted && getCompletedTasks(upcomingTaskList).length > 0" name="eye-outline"></ion-icon>
+            <ion-icon *ngIf="showUpcomingCompleted && getCompletedTasks(upcomingTaskList).length > 0" name="eye-off-outline"></ion-icon>
+            <ion-label *ngIf="getCompletedTasks(upcomingTaskList).length > 0">{{ showUpcomingCompleted ? 'Hide completed' : 'Show Completed' }}</ion-label>
+          </ion-chip>
+        </div>
         <ion-chip color="primary" outline>
           <ion-label>{{ getActiveTasks(upcomingTaskList).length }}</ion-label>
         </ion-chip>

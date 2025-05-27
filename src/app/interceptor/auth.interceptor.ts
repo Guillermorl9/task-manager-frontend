@@ -8,7 +8,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const token: string | null = localStorage.getItem('access_token');
 
   if (token && !req.url.includes('/api/auth')) {
-    console.log("token", token);
     const cloned = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${token}`)
     });
