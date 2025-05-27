@@ -13,7 +13,7 @@ import {
   IonChip,
   IonProgressBar,
   IonText,
-  IonCheckbox, AlertController,
+  IonCheckbox, AlertController, LoadingController,
 } from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
 import { addIcons } from 'ionicons';
@@ -59,6 +59,7 @@ export class HomePage implements OnInit{
   showTodayCompleted: boolean = true;
   showUpcomingCompleted: boolean = true;
   todayTasks: Task[] = [];
+  upcomingTasks: Task[] = [];
 
   todayTaskList: TaskList = {
     title: 'Today \'s Tasks',
@@ -119,7 +120,7 @@ export class HomePage implements OnInit{
     this.taskModal.openTaskModal(task);
   }
 
-  async deleteTask(): Promise<void> {
+  async deleteTask(taskId: number | undefined): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Confirm deletion',
       message: 'Are you sure you want to eliminate this task?',
@@ -132,6 +133,9 @@ export class HomePage implements OnInit{
         {
           text: 'Delete',
           handler: () => {
+            if (taskId) {
+              this.taskManagerService.deleteTask(taskId);
+            }
           }
         }
       ]
@@ -147,5 +151,7 @@ export class HomePage implements OnInit{
   getCompletedTasks(taskList: TaskList): Task[] {
     return taskList.tasks.filter(task => task.completed);
   }
+
+
 
 }

@@ -200,20 +200,27 @@ export class CreateTaskModalComponent implements OnInit {
 
   // createTaskForm: confirm button
   createTask(): void {
-    if(this.createTaskForm.invalid) {
+    if (this.createTaskForm.invalid) {
       this.createTaskForm.markAllAsTouched();
       return;
     }
 
+    // Recortar solo la parte de la fecha, sin hora
+    let dateOnly = this.createTaskForm.value.date;
+    if (dateOnly && dateOnly.includes('T')) {
+      dateOnly = dateOnly.split('T')[0];
+    }
+
     const selectedList: TaskList | undefined = this.allTaskLists.find(list => list.title === this.createTaskForm.value.list);
     const selectedListId: number | undefined = selectedList ? selectedList.id : 0;
+
     const task: Task = {
       title: this.createTaskForm.value.title,
       description: this.createTaskForm.value.description,
-      date: this.createTaskForm.value.date,
+      date: dateOnly,               // Aquí ya va sólo la fecha
       time: this.createTaskForm.value.time,
       completed: false,
-    }
+    };
 
     if (selectedListId) {
       this.taskManagerService.addTask(selectedListId, task);
@@ -229,4 +236,5 @@ export class CreateTaskModalComponent implements OnInit {
 
     this.createTaskModal.dismiss({ task, list: selectedList }, 'confirm');
   }
+
 }

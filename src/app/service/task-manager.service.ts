@@ -28,6 +28,12 @@ export class TaskManagerService {
   private userTasks: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>([]);
   public userTasks$: Observable<Task[]> = this.userTasks.asObservable();
 
+  private todayTasks: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>([]);
+  public todayTasks$: Observable<Task[]> = this.todayTasks.asObservable();
+
+  private upcomingTasks: BehaviorSubject<Task[]> = new BehaviorSubject<Task[]>([]);
+  public upcomingTasks$: Observable<Task[]> = this.upcomingTasks.asObservable();
+
   constructor() {
     this.authService.currentUser$.subscribe((user => {
       if (user) {
@@ -36,6 +42,7 @@ export class TaskManagerService {
         this.clearUserData();
       }
     }))
+
   }
 
   private loadUserData(): void {
@@ -43,6 +50,16 @@ export class TaskManagerService {
       next: categories => this.userCategories.next(categories),
       error: err => console.error('Error al cargar categorías:', err)
     });
+
+    this.taskApiService.getTodayTasks().subscribe({
+      next: tasks => this.todayTasks.next(tasks),
+      error: err => console.error('Error al cargar tareas de hoy:', err)
+    });
+
+    this.taskApiService.getUpcomingTasks().subscribe({
+      next: tasks => this.upcomingTasks.next(tasks),
+      error: err => console.error('Error al cargar tareas futuras:', err)
+    })
 
     this.taskListApiService.getAllTaskLists().subscribe({
       next: tasksLists => this.userTasksLists.next(tasksLists),
@@ -169,18 +186,11 @@ export class TaskManagerService {
     });
   }
 
-  get todayTasks$(): Observable<Task[]> {
-    return this.taskApiService.getTodayTasks();
-  }
-
-  get upcomingTasks$(): Observable<Task[]> {
-    return this.taskApiService.getUpcomingTasks();
-  }
-
   addTask(taskListId: number, task: Task): void {
     this.taskApiService.createTask(taskListId, task).subscribe({
       next: createdTask => {
         this.userTasks.next([...this.userTasks.value, createdTask]);
+
         const updatedTaskLists = this.userTasksLists.value.map(list => {
           if (list.id === taskListId) {
             return {
@@ -191,6 +201,7 @@ export class TaskManagerService {
           return list;
         });
         this.userTasksLists.next(updatedTaskLists);
+
         const updatedCategories = this.userCategories.value.map(cat => ({
           ...cat,
           lists: cat.lists?.map(list => {
@@ -204,18 +215,48 @@ export class TaskManagerService {
           }) || []
         }));
         this.userCategories.next(updatedCategories);
+
+        if (this.isTaskForToday(createdTask)) {
+          this.todayTasks.next([...this.todayTasks.value, createdTask]);
+        }
+        if (this.isTaskUpcoming(createdTask)) {
+          this.upcomingTasks.next([...this.upcomingTasks.value, createdTask]);
+        }
       },
       error: err => console.error('Error al crear tarea:', err)
     });
   }
 
+  private isTaskForToday(task: Task): boolean {
+    if (!task.date) return false;
+
+    const today = new Date();
+    const taskDate = new Date(task.date);
+
+    return taskDate.toDateString() === today.toDateString();
+  }
+
+  private isTaskUpcoming(task: Task): boolean {
+    if (!task.date) return false;
+
+    const today = new Date();
+    const taskDate = new Date(task.date);
+
+    today.setHours(0, 0, 0, 0);
+    taskDate.setHours(0, 0, 0, 0);
+
+    return taskDate > today;
+  }
+
   updateTask(taskId: number, updatedData: Task): void {
     this.taskApiService.updateTask(taskId, updatedData).subscribe({
       next: updatedTask => {
-        const updated: Task[] = this.userTasks.value.map(t =>
-          t.id === taskId ? updatedTask : t
+
+        const updated: Task[] = this.userTasks.value.map(task =>
+          task.id === taskId ? updatedTask : task
         );
         this.userTasks.next(updated);
+
       },
       error: err => console.error('Error al actualizar tarea:', err)
     });
@@ -224,13 +265,22 @@ export class TaskManagerService {
   deleteTask(taskId: number): void {
     this.taskApiService.deleteTask(taskId).subscribe({
       next: () => {
+
         const filteredTasks = this.userTasks.value.filter(t => t.id !== taskId);
         this.userTasks.next(filteredTasks);
+
+        const filteredTodayTasks: Task[] = this.todayTasks.value.filter(t => t.id !== taskId);
+        this.todayTasks.next(filteredTodayTasks);
+
+        const filteredUpcomingTasks: Task[] = this.upcomingTasks.value.filter(t => t.id !== taskId);
+        this.upcomingTasks.next(filteredUpcomingTasks);
+
         const updatedTaskLists = this.userTasksLists.value.map(list => ({
           ...list,
           tasks: list.tasks?.filter(task => task.id !== taskId) || []
         }));
         this.userTasksLists.next(updatedTaskLists);
+
         const updatedCategories = this.userCategories.value.map(cat => ({
           ...cat,
           lists: cat.lists?.map(list => ({
