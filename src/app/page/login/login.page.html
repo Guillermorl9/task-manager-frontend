@@ -23,6 +23,10 @@
       <ion-button expand="block" type="submit" [disabled]="formulario.invalid" class="login-button">
         Login
       </ion-button>
+      <asl-google-signin-button
+        (error)="onGoogleLoginError($event)">
+      </asl-google-signin-button>
+
     </form>
 
     <div class="register-prompt">

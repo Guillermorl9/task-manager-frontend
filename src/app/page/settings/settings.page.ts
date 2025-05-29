@@ -55,7 +55,7 @@ export class SettingsPage implements OnInit{
 
   userProfile: UserApp = {
     name: 'Alex',
-    lastName: 'Johnson',
+    lastname: 'Johnson',
     email: 'alex.johnson@example.com',
     photoUrl: 'https://i.pravatar.cc/300'
   };

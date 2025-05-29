@@ -13,23 +13,33 @@ import {
 } from '@ionic/angular/standalone';
 import {RouterLink} from "@angular/router";
 import {AuthService} from "../../service/auth.service";
+import {
+  SocialAuthService,
+  SocialUser,
+  GoogleLoginProvider,
+  GoogleSigninButtonDirective
+} from '@abacritt/angularx-social-login';
+import {UserApp} from "../../model/UserApp";
+import {LoginResponse} from "../../model/LoginResponse";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, ReactiveFormsModule, IonItem, IonInput, IonLabel, IonButton, RouterLink]
+  imports: [IonContent, CommonModule, FormsModule, ReactiveFormsModule, IonItem, IonInput, IonLabel, IonButton, RouterLink, GoogleSigninButtonDirective]
 })
-export class LoginPage {
+export class LoginPage implements OnInit{
   // Services
   private loadingCtrl: LoadingController = inject(LoadingController);
   private authService: AuthService = inject(AuthService);
+  private socialAuthService: SocialAuthService = inject(SocialAuthService);
 
   // Variables
   formulario: FormGroup;
   email: string = '';
   password: string = '';
+  user: SocialUser | null = null;
 
   constructor(private form: FormBuilder) {
     this.formulario = this.form.group({
@@ -38,6 +48,36 @@ export class LoginPage {
     })
 
   }
+
+  ngOnInit() {
+    this.socialAuthService.authState.subscribe(async (user) => {
+      this.user = user;
+      console.log("User logged in:", user);
+
+      if (user && user.idToken) {
+        const loading = await this.presentLoading();
+
+        this.authService.loginWithGoogle(user.idToken).subscribe({
+          next: async (response: LoginResponse) => {
+            await loading.dismiss();
+            console.log('Login con Google exitoso:', response);
+
+            const appUser: UserApp = response.user;
+
+            localStorage.setItem('access_token', response.token);
+            localStorage.setItem('user', JSON.stringify(appUser));
+
+          },
+          error: async (err) => {
+            await loading.dismiss();
+            console.error('Error login Google:', err);
+            alert('Error al iniciar sesión con Google');
+          }
+        });
+      }
+    });
+  }
+
 
   async onSubmit(): Promise<void> {
     const loading = await this.presentLoading();
@@ -65,6 +105,20 @@ export class LoginPage {
       await loading.dismiss();
     }
 
+  }
+
+  signInWithGoogle(user: SocialUser) {
+    this.user = user;
+    console.log('Google user:', user);
+  }
+
+  onGoogleLoginError(error: any) {
+    console.error('Google login error', error);
+  }
+
+
+  signOut(): void {
+    this.socialAuthService.signOut();
   }
 
   private async presentLoading() {

@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, Observable, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {UserApp} from "../model/UserApp";
+import {LoginResponse} from "../model/LoginResponse";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,17 @@ export class AuthService {
 
   constructor() {
     this.loadUserFromStorage();
+  }
+
+  loginWithGoogle(idToken: string): Observable<AuthResponse> {
+    return this.http.post<LoginResponse>(`${this.API_URL}/google`, { idToken }).pipe(
+      tap(response => {
+        localStorage.setItem(this.tokenKey, response.token);
+        localStorage.setItem(this.userKey, JSON.stringify(response.user));
+        this.currentUser.next(response.user);
+        this.router.navigate(['/home']);
+      })
+    )
   }
 
   login(credentials: {email: string, password: string}): Observable<AuthResponse> {
