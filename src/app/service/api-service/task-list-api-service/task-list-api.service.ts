@@ -13,7 +13,7 @@ export class TaskListApiService {
   }
 
   getAllTaskLists(): Observable<TaskList[]> {
-    return this.http.get<TaskList[]>(`${this.BASE_URL}/lists`);
+    return this.http.get<TaskList[]>(`${this.BASE_URL}/user/lists`);
   }
 
   createTaskList(categoryId: number, taskList: TaskList): Observable<TaskList> {
