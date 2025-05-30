@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {
+  AlertController,
   IonButton,
   IonContent,
   IonHeader, IonInput,
@@ -25,6 +26,7 @@ export class RegisterPage {
   // Services
   private loadingCtrl: LoadingController = inject(LoadingController)
   private authService: AuthService = inject(AuthService);
+  private alertCtrl: AlertController = inject(AlertController);
 
   // Variables
   formulario: FormGroup;
@@ -60,7 +62,14 @@ export class RegisterPage {
         },
         error: async (error) => {
           await loading.dismiss();
-          console.error('Error during registration:', error);
+          console.error("Register failed", error);
+          const message: string = error?.error?.message || 'Email already exists or invalid data';
+          const alert = await this.alertCtrl.create({
+            header: 'Register error',
+            message: message,
+            buttons: ['Accept']
+          });
+          await alert.present();
         }
       });
       await loading.dismiss();

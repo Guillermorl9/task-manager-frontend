@@ -2,6 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {
+  AlertController,
   IonButton,
   IonContent,
   IonHeader,
@@ -34,6 +35,7 @@ export class LoginPage implements OnInit{
   private loadingCtrl: LoadingController = inject(LoadingController);
   private authService: AuthService = inject(AuthService);
   private socialAuthService: SocialAuthService = inject(SocialAuthService);
+  private alertCtrl: AlertController = inject(AlertController);
 
   // Variables
   formulario: FormGroup;
@@ -97,6 +99,13 @@ export class LoginPage implements OnInit{
         error: async (error) => {
           await loading.dismiss();
           console.error("Login failed", error);
+          const message: string = error?.error?.message || 'Incorrect email or password';
+          const alert = await this.alertCtrl.create({
+            header: 'Login error',
+            message: message,
+            buttons: ['Accept']
+          });
+          await alert.present();
         }
       });
       console.log(email, password);
@@ -114,11 +123,6 @@ export class LoginPage implements OnInit{
 
   onGoogleLoginError(error: any) {
     console.error('Google login error', error);
-  }
-
-
-  signOut(): void {
-    this.socialAuthService.signOut();
   }
 
   private async presentLoading() {
