@@ -68,7 +68,7 @@ export class CreateCategoryModalComponent {
 
     this.createCategoryForm = this.form.group({
       title: ['', [Validators.required]],
-      icon: ['folder-outline'] // Valor por defecto
+      icon: ['folder-outline']
     });
 
     this.createCategoryForm.valueChanges.subscribe(() => {

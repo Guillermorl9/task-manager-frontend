@@ -42,11 +42,11 @@ export class CreateTasklistModalComponent implements OnInit {
 
     this.createTaskListForm = this.form.group({
       title: ['', [Validators.required]],
-      category: ['category1']
+      category: ['', [Validators.required]],
     })
 
     this.createTaskListForm.valueChanges.subscribe(() => {
-      this.buttonCreateTaskListDisabled = !this.createTaskListForm.get('title')?.value;
+      this.buttonCreateTaskListDisabled = !(this.createTaskListForm.get('title')?.value && this.createTaskListForm.get('category')?.value);
     });
   }
 
@@ -59,7 +59,7 @@ export class CreateTasklistModalComponent implements OnInit {
   async openTaskListModal() {
     this.createTaskListForm.reset({
       title: '',
-      category: 'category1'
+      category: ''
     });
 
     await this.createTaskListModal.present();
@@ -69,7 +69,7 @@ export class CreateTasklistModalComponent implements OnInit {
   async cancelCreateTaskList(): Promise<void> {
     this.createTaskListForm.reset({
       title: '',
-      category: 'category1'
+      category: ''
     });
 
     await this.createTaskListModal.dismiss(null, 'cancel');
@@ -93,7 +93,7 @@ export class CreateTasklistModalComponent implements OnInit {
 
     this.createTaskListForm.reset({
       title: '',
-      category: 'category1'
+      category: ''
     });
 
     this.createTaskListModal.dismiss({ taskList, category: selectedCategory }, 'confirm');

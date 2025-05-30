@@ -55,11 +55,11 @@ export class CreateTaskModalComponent implements OnInit {
       date: ['', [Validators.required]],
       time: [''],
       description: [''],
-      list: ['list1'],
+      list: ['', [Validators.required]],
     });
 
     this.createTaskForm.valueChanges.subscribe(() => {
-      this.taskButtonDisabled = !(this.createTaskForm.get('title')?.value && this.createTaskForm.get('date')?.value);
+      this.taskButtonDisabled = !(this.createTaskForm.get('title')?.value && this.createTaskForm.get('date')?.value && this.createTaskForm.get('list')?.value);
     });
   }
 
@@ -75,7 +75,7 @@ export class CreateTaskModalComponent implements OnInit {
       date: '',
       time: '',
       description: '',
-      list: 'list1'
+      list: ''
     });
 
     this.allDay = false;
@@ -88,7 +88,7 @@ export class CreateTaskModalComponent implements OnInit {
       this.createTaskForm.patchValue({
         title: task.title || '',
         description: task.description || '',
-        list: 'list1'
+        list: ''
       });
 
       if (task.date) {
@@ -134,7 +134,7 @@ export class CreateTaskModalComponent implements OnInit {
       date: '',
       time: '',
       description: '',
-      list: 'list1'
+      list: ''
     });
 
     this.createTaskModal.dismiss(null, 'cancel');
