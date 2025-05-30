@@ -16,7 +16,6 @@ import {Task} from "../../model/Task";
 import {CreateTaskModalComponent} from "../../component/create-task-modal/create-task-modal.component";
 import {addIcons} from "ionicons";
 import {ellipsisHorizontalOutline,   eyeOutline, eyeOffOutline, trashOutline } from "ionicons/icons";
-import {TaskList} from "../../model/TaskList";
 import {TaskManagerService} from "../../service/task-manager.service";
 
 @Component({
@@ -54,9 +53,6 @@ export class CalendarPage implements OnInit{
       this.totalTasks = this.allTasks.length;
       this.completionRate = this.totalTasks ? this.completedTasks / this.totalTasks : 0;
 
-      if (this.tasksSelectedDate) {
-        this.selectedDate = new Date();
-      }
     })
   }
 

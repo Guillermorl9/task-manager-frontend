@@ -2,8 +2,10 @@
 <ion-content class="ion-padding">
   <app-task-schedule
     [selectedDate]="selectedDate"
+    [allTasks]="allTasks"
     (dateSelected)="onDateSelected($event)">
   </app-task-schedule>
+
   <ion-card class="task-card">
     <ion-card-header>
       <div class="card-header-content">
@@ -61,6 +63,7 @@
               </div>
             </div>
             <ion-icon name="ellipsis-horizontal-outline" slot="end" class="options-icon" (click)="openTaskModal(task)"></ion-icon>
+            <ion-icon name="trash-outline" color="danger" slot="end" class="options-icon" (click)="deleteTask(task.id)"></ion-icon>
           </ion-item>
         </div>
       </div>

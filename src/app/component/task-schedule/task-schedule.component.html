@@ -1,11 +1,9 @@
-<!-- v2 -->
 <div class="calendar-content">
   <ion-header class="current-date">
     <h4>{{ currentDate | date: 'fullDate' }}</h4>
   </ion-header>
 
   <ion-grid>
-    <!-- Navegación de mes -->
     <ion-row class="ion-align-items-center ion-justify-content-between">
       <ion-col size="2">
         <ion-button class="toolbar-button" fill="clear" (click)="previousMonth()">
@@ -22,16 +20,13 @@
       </ion-col>
     </ion-row>
 
-    <!-- Días de la semana -->
     <ion-row>
       <ion-col size="1.7" *ngFor="let day of weekDays" class="ion-text-center weekday">
         <strong>{{ day }}</strong>
       </ion-col>
     </ion-row>
 
-    <!-- Semanas (Filas) -->
     <ion-row *ngFor="let week of calendar">
-      <!-- Días (Celdas) -->
       <ion-col
         size="1.7"
         *ngFor="let day of week"
@@ -46,9 +41,8 @@
         >
           {{ day.day }}
         </div>
-        <div *ngIf="getTasksCountForDay(day) > 0" class="task-count">
-          {{ getTasksCountForDay(day) }} task{{ getTasksCountForDay(day) > 1 ? 's' : '' }}
-        </div>
+        <div *ngIf="getTasksCountForDay(day) > 0" class="task-dot"></div>
+
       </ion-col>
     </ion-row>
   </ion-grid>

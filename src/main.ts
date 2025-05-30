@@ -13,7 +13,7 @@ import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider } from 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    provideIonicAngular({mode: 'md'}),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withInterceptors([authInterceptor])),
 

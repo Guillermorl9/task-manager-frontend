@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
@@ -13,11 +13,12 @@ import {Task} from "../../model/Task";
   styleUrls: ['./task-schedule.component.scss'],
   imports: [CommonModule, IonicModule, FormsModule],
 })
-// v2
-export class TaskScheduleComponent implements OnInit {
+
+export class TaskScheduleComponent implements OnInit, OnChanges {
 
   @Input() selectedDate: Date = new Date();
   @Output() dateSelected: EventEmitter<Date> = new EventEmitter<Date>();
+  @Input() allTasks: Task[] = [];
 
   currentDate: Date = new Date();
   calendar: CalendarDay[][] = [];
@@ -25,47 +26,18 @@ export class TaskScheduleComponent implements OnInit {
   weekDays: string[] = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   monthNames: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  allTasks: Task[] = [
-    {
-      title: 'Meeting with the team',
-      date: '2025-05-02',
-      time: '10:00',
-      description: 'Weekly update meeting with the development team',
-      completed: true
-    },
-    {
-      title: 'Send project proposal',
-      date: '2025-05-02',
-      time: '13:30',
-      description: 'Send the final proposal to the client',
-      completed: false
-    },
-    {
-      title: 'Exercise routine',
-      date: '2025-05-02',
-      completed: true
-    },
-    {
-      title: 'Grocery shopping',
-      date: '2025-05-04',
-      description: 'Buy groceries for the week',
-      completed: true
-    },
-    {
-      title: 'Prepare presentation',
-      date: '2025-05-03',
-      time: '16:00',
-      description: 'Prepare slides for tomorrow\'s presentation',
-      completed: false
-    }
-  ];
-
   constructor() {
     addIcons({chevronBackOutline, chevronForwardOutline});
   }
 
   ngOnInit(): void {
     this.generateCalendar();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['allTasks']) {
+      this.generateCalendar();
+    }
   }
 
   generateCalendar(): void {
