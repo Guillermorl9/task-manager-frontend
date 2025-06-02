@@ -116,11 +116,6 @@ export class LoginPage implements OnInit{
 
   }
 
-  signInWithGoogle(user: SocialUser) {
-    this.user = user;
-    console.log('Google user:', user);
-  }
-
   onGoogleLoginError(error: any) {
     console.error('Google login error', error);
   }

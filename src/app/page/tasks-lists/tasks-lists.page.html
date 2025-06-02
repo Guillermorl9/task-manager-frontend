@@ -44,9 +44,6 @@
     <div class="category-header">
       <ion-icon [name]="section.icon" class="category-icon"></ion-icon>
       <h2 class="category-title">{{ section.title }}</h2>
-      <div class="category-stats" *ngIf="getTotalTasksInCategory(section) > 0">
-        <span class="total-tasks">{{ getTotalTasksInCategory(section) }} tasks</span>
-      </div>
       <ion-icon name="trash-outline" color="danger" slot="end" class="options-icon" (click)="deleteCategory(section.id)"></ion-icon>
     </div>
 
