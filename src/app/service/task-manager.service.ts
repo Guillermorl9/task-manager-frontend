@@ -230,6 +230,11 @@ export class TaskManagerService {
         if (this.isTaskUpcoming(createdTask)) {
           this.upcomingTasks.next([...this.upcomingTasks.value, createdTask]);
         }
+
+        this.taskApiService.getUpcomingTasks().subscribe({
+          next: tasks => this.upcomingTasks.next(tasks),
+          error: err => console.error('Error al cargar tareas futuras:', err)
+        })
       },
       error: err => console.error('Error al crear tarea:', err)
     });
@@ -322,6 +327,11 @@ export class TaskManagerService {
           })) || []
         }));
         this.userCategories.next(updatedCategories);
+
+        this.taskApiService.getUpcomingTasks().subscribe({
+          next: tasks => this.upcomingTasks.next(tasks),
+          error: err => console.error('Error al cargar tareas futuras:', err)
+        })
       },
       error: err => console.error('Error al eliminar tarea:', err)
     });
