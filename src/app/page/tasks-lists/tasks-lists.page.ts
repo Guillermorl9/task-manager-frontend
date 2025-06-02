@@ -6,7 +6,9 @@ import {
   IonIcon,
   IonButton,
   IonSearchbar,
-  IonRippleEffect, AlertController
+  IonRippleEffect,
+  AlertController,
+  ActionSheetController, IonChip, IonLabel
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -24,6 +26,10 @@ import {
   peopleOutline,
   timeOutline,
   ellipsisHorizontalOutline,
+  trashOutline,
+  listOutline,
+  trendingUpOutline,
+  trendingDownOutline
 } from 'ionicons/icons';
 import { CustomHeaderComponent } from '../../component/custom-header/custom-header.component';
 import { TaskList } from '../../model/TaskList';
@@ -32,6 +38,12 @@ import {Category} from "../../model/Category";
 import {TaskListDetailsComponent} from "../../component/task-list-details/task-list-details.component";
 import {CreateCategoryModalComponent} from "../../component/create-category-modal/create-category-modal.component";
 import {TaskManagerService} from "../../service/task-manager.service";
+
+export enum SortOrder {
+  NORMAL = 'normal',
+  MORE_TASKS = 'more_tasks',
+  LESS_TASKS = 'less_tasks'
+}
 
 @Component({
   selector: 'app-tasks-lists',
@@ -49,7 +61,7 @@ import {TaskManagerService} from "../../service/task-manager.service";
     CustomHeaderComponent,
     FormsModule,
     TaskListDetailsComponent,
-    CreateCategoryModalComponent
+    CreateCategoryModalComponent, IonChip, IonLabel
   ]
 })
 export class TasksListsPage implements OnInit {
@@ -60,11 +72,14 @@ export class TasksListsPage implements OnInit {
   // Services
   private taskManagerService: TaskManagerService = inject(TaskManagerService);
   private alertController: AlertController = inject(AlertController);
+  private actionSheetController: ActionSheetController = inject(ActionSheetController);
 
   // Variables
   searchQuery: string = '';
   showSearch: boolean = false;
   allCategories: Category[] = [];
+  filteredCategories: Category[] = [];
+  currentSortOrder: SortOrder = SortOrder.NORMAL;
 
   constructor() {
     addIcons({
@@ -81,18 +96,118 @@ export class TasksListsPage implements OnInit {
       schoolOutline,
       peopleOutline,
       timeOutline,
-      ellipsisHorizontalOutline
+      ellipsisHorizontalOutline,
+      trashOutline,
+      listOutline,
+      trendingUpOutline,
+      trendingDownOutline
     });
   }
 
   ngOnInit(): void {
     this.taskManagerService.userCategories$.subscribe((categories) => {
       this.allCategories = categories;
+      this.applyFiltersAndSort();
     });
   }
 
   toggleSearch(): void {
     this.showSearch = !this.showSearch;
+    if (!this.showSearch) {
+      this.searchQuery = '';
+      this.applyFiltersAndSort();
+    }
+  }
+
+  onSearchChange(): void {
+    this.applyFiltersAndSort();
+  }
+
+  async showFilterOptions(): Promise<void> {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Sort Categories',
+      buttons: [
+        {
+          text: 'Normal Order',
+          icon: 'list-outline',
+          handler: () => {
+            this.currentSortOrder = SortOrder.NORMAL;
+            this.applyFiltersAndSort();
+          }
+        },
+        {
+          text: 'More Tasks First',
+          icon: 'trending-up-outline',
+          handler: () => {
+            this.currentSortOrder = SortOrder.MORE_TASKS;
+            this.applyFiltersAndSort();
+          }
+        },
+        {
+          text: 'Less Tasks First',
+          icon: 'trending-down-outline',
+          handler: () => {
+            this.currentSortOrder = SortOrder.LESS_TASKS;
+            this.applyFiltersAndSort();
+          }
+        },
+      ]
+    });
+    await actionSheet.present();
+  }
+
+  private applyFiltersAndSort(): void {
+    let categories = [...this.allCategories];
+
+    if (this.searchQuery.trim()) {
+      categories = this.filterCategoriesBySearch(categories, this.searchQuery.trim().toLowerCase());
+    }
+
+    categories = this.sortCategories(categories);
+
+    this.filteredCategories = categories;
+  }
+
+  private filterCategoriesBySearch(categories: Category[], query: string): Category[] {
+    return categories.map(category => {
+      const categoryMatches = category.title.toLowerCase().includes(query);
+
+      const filteredLists = category.lists.filter(list => {
+        const listMatches = list.title.toLowerCase().includes(query);
+        const taskMatches = list.tasks.some(task =>
+          task.title.toLowerCase().includes(query) ||
+          (task.description && task.description.toLowerCase().includes(query))
+        );
+        return listMatches || taskMatches;
+      });
+
+      if (categoryMatches || filteredLists.length > 0) {
+        return {
+          ...category,
+          lists: categoryMatches ? category.lists : filteredLists
+        };
+      }
+
+      return null;
+    }).filter(category => category !== null) as Category[];
+  }
+
+  private sortCategories(categories: Category[]): Category[] {
+    switch (this.currentSortOrder) {
+      case SortOrder.MORE_TASKS:
+        return categories.sort((a, b) => this.getTotalTasksInCategory(b) - this.getTotalTasksInCategory(a));
+
+      case SortOrder.LESS_TASKS:
+        return categories.sort((a, b) => this.getTotalTasksInCategory(a) - this.getTotalTasksInCategory(b));
+
+      case SortOrder.NORMAL:
+      default:
+        return categories;
+    }
+  }
+
+  getTotalTasksInCategory(category: Category): number {
+    return category.lists.reduce((total, list) => total + list.tasks.length, 0);
   }
 
   getCompletedTasksCount(taskList: TaskList): number {
@@ -136,7 +251,7 @@ export class TasksListsPage implements OnInit {
           text: 'Delete',
           handler: () => {
             if (categoryId)
-            this.taskManagerService.deleteCategory(categoryId);
+              this.taskManagerService.deleteCategory(categoryId);
           }
         }
       ]

@@ -5,7 +5,9 @@
     <div class="search-container" [class.active]="showSearch">
       <ion-searchbar *ngIf="showSearch"
                      [(ngModel)]="searchQuery"
-                     placeholder="Search lists"
+                     (ionInput)="onSearchChange()"
+                     (ionCancel)="toggleSearch()"
+                     placeholder="Search categories, lists or tasks"
                      animated="true"
                      showCancelButton="focus"
                      class="custom-searchbar">
@@ -16,19 +18,36 @@
           <ion-icon name="search-outline"></ion-icon>
         </ion-button>
 
-        <ion-button fill="clear" class="toolbar-button">
+        <ion-button fill="clear" class="toolbar-button" (click)="showFilterOptions()">
           <ion-icon name="filter-outline"></ion-icon>
         </ion-button>
       </div>
     </div>
   </div>
 
-  <div class="category-section" *ngFor="let section of allCategories">
+  <div class="no-results" *ngIf="searchQuery.trim() && filteredCategories.length === 0">
+    <ion-icon name="search-outline" class="no-results-icon"></ion-icon>
+    <h3>No results found</h3>
+    <p>Try searching with different keywords</p>
+  </div>
+
+  <div class="filter-indicator" *ngIf="currentSortOrder !== 'normal'">
+    <ion-chip color="primary" outline="true">
+      <ion-icon [name]="currentSortOrder === 'more_tasks' ? 'trending-up-outline' : 'trending-down-outline'"></ion-icon>
+      <ion-label>
+        {{ currentSortOrder === 'more_tasks' ? 'More tasks first' : 'Less tasks first' }}
+      </ion-label>
+    </ion-chip>
+  </div>
+
+  <div class="category-section" *ngFor="let section of filteredCategories">
     <div class="category-header">
       <ion-icon [name]="section.icon" class="category-icon"></ion-icon>
       <h2 class="category-title">{{ section.title }}</h2>
+      <div class="category-stats" *ngIf="getTotalTasksInCategory(section) > 0">
+        <span class="total-tasks">{{ getTotalTasksInCategory(section) }} tasks</span>
+      </div>
       <ion-icon name="trash-outline" color="danger" slot="end" class="options-icon" (click)="deleteCategory(section.id)"></ion-icon>
-      <!-- <ion-badge color="primary" mode="ios">{{ section.lists.length }}</ion-badge> -->
     </div>
 
     <div class="lists-grid">
